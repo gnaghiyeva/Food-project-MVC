@@ -31,9 +31,12 @@ public class HeroController {
     public String createHero(){
         return "/dashboard/hero/hero-create";
     }
+
     @PostMapping("/admin/hero/create")
     public String createHero(@ModelAttribute HeroCreateDto heroCreateDto){
        heroService.createHero(heroCreateDto);
-       return "redirect:/dashboard/hero";
+       return "redirect:/admin/hero";
     }
+
+    
 }

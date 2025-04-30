@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -25,13 +26,15 @@ import static org.codehaus.groovy.runtime.DefaultGroovyMethods.collect;
 
 @Service
 public class HeroServiceImpl implements HeroService {
-    private static final String UPLOAD_DIR = System.getProperty("user.dir") + "/src/main/resources/static/uploads/";
+    private static final String UPLOAD_DIR = System.getProperty("user.dir") + "/uploads/";
+    private static final String STATIC_UPLOAD_DIR = System.getProperty("user.dir") + "/src/main/resources/static/uploads/";
 
     @Autowired
     private HeroRepository heroRepository;
 
     @Autowired
     private ModelMapper modelMapper;
+
 
     @Override
     public void createHero(HeroCreateDto heroCreateDto) {
@@ -40,24 +43,39 @@ public class HeroServiceImpl implements HeroService {
 
         if (file != null && !file.isEmpty()) {
             try {
-                String originalFileName = file.getOriginalFilename();
-                String fileExtension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+                if (hero.getPhotoUrl() != null) {
+                    String oldFileName = hero.getPhotoUrl();
 
-                String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
+                    // Hem project root/uploads içinden sil
+                    Path oldFilePath = Paths.get(UPLOAD_DIR + oldFileName);
+                    Files.deleteIfExists(oldFilePath);
 
-                File uploadDir = new File(UPLOAD_DIR);
-                if (!uploadDir.exists()) {
-                    uploadDir.mkdirs();
+                    // Hem static/uploads içinden sil
+                    Path oldStaticPath = Paths.get(STATIC_UPLOAD_DIR + oldFileName);
+                    Files.deleteIfExists(oldStaticPath);
                 }
 
+                // 2. Yeni file yaratmaq
+                String originalFileName = file.getOriginalFilename();
+                String fileExtension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+                String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
+
+                // uploads/ folderine yaz
+                File uploadDir = new File(UPLOAD_DIR);
+                if (!uploadDir.exists()) uploadDir.mkdirs();
                 Path filePath = Paths.get(UPLOAD_DIR + uniqueFileName);
                 Files.write(filePath, file.getBytes());
 
-                hero.setPhotoUrl(uniqueFileName);
+                // static/uploads/ folderine kopyala
+                File staticUploadDir = new File(STATIC_UPLOAD_DIR);
+                if (!staticUploadDir.exists()) staticUploadDir.mkdirs();
+                Path staticFilePath = Paths.get(STATIC_UPLOAD_DIR + uniqueFileName);
+                Files.copy(filePath, staticFilePath, StandardCopyOption.REPLACE_EXISTING);
 
+                hero.setPhotoUrl(uniqueFileName);
             } catch (IOException e) {
                 System.err.println("Photo upload failed: " + e.getMessage());
-                return; // və ya istəyə görə exception throw oluna bilər
+                return;
             }
         } else {
             System.err.println("Photo file cannot be empty!");
