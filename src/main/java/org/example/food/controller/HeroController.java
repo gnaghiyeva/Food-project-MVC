@@ -2,6 +2,7 @@ package org.example.food.controller;
 
 import org.example.food.dtos.herodtos.HeroCreateDto;
 import org.example.food.dtos.herodtos.HeroDto;
+import org.example.food.dtos.herodtos.HeroUpdateDto;
 import org.example.food.service.HeroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,5 +39,17 @@ public class HeroController {
        return "redirect:/admin/hero";
     }
 
-    
+    @GetMapping("/admin/hero/hero-edit/{id}")
+    public String updateHero(@ModelAttribute @PathVariable Long id, Model model){
+        HeroUpdateDto heroUpdateDto = heroService.findUpdateHero(id);
+        model.addAttribute("hero", heroUpdateDto);
+        return "dashboard/hero/hero-edit";
+    }
+
+    @PostMapping("/admin/hero/update")
+    public String updateHero(@ModelAttribute HeroUpdateDto heroUpdateDto) {
+        heroService.updatedHero(heroUpdateDto);
+        return "redirect:/admin/hero";
+    }
+
 }

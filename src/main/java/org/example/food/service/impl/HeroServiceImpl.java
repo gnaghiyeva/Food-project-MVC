@@ -3,6 +3,7 @@ package org.example.food.service.impl;
 import jdk.jfr.Category;
 import org.example.food.dtos.herodtos.HeroCreateDto;
 import org.example.food.dtos.herodtos.HeroDto;
+import org.example.food.dtos.herodtos.HeroUpdateDto;
 import org.example.food.model.Hero;
 import org.example.food.payloads.APIResponse;
 import org.example.food.repository.HeroRepository;
@@ -90,6 +91,62 @@ public class HeroServiceImpl implements HeroService {
         List<HeroDto> result = heroRepository.findAll().stream().map(hero -> modelMapper.map(hero, HeroDto.class))
                 .collect(Collectors.toList());
         return result;
+    }
+
+    @Override
+    public void updatedHero(HeroUpdateDto heroDto) {
+        Hero findHero = heroRepository.findById(heroDto.getId()).orElseThrow();
+        MultipartFile file = heroDto.getPhotoFile();
+
+        if (file != null && !file.isEmpty()) {
+            try {
+                // Əvvəlki şəkilləri silmək
+                String oldFileName = findHero.getPhotoUrl();
+                if (oldFileName != null && !oldFileName.isEmpty()) {
+                    Path oldFilePath = Paths.get(UPLOAD_DIR + oldFileName);
+                    Files.deleteIfExists(oldFilePath);
+
+                    Path oldStaticPath = Paths.get(STATIC_UPLOAD_DIR + oldFileName);
+                    Files.deleteIfExists(oldStaticPath);
+                }
+
+                // Yeni faylın adınının təyin olunması
+                String originalFileName = file.getOriginalFilename();
+                String fileExtension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+                String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
+
+                // uploads/ folderinə yaz
+                File uploadDir = new File(UPLOAD_DIR);
+                if (!uploadDir.exists()) uploadDir.mkdirs();
+                Path filePath = Paths.get(UPLOAD_DIR + uniqueFileName);
+                Files.write(filePath, file.getBytes());
+
+                // static/uploads/ folderinə kopyala
+                File staticUploadDir = new File(STATIC_UPLOAD_DIR);
+                if (!staticUploadDir.exists()) staticUploadDir.mkdirs();
+                Path staticFilePath = Paths.get(STATIC_UPLOAD_DIR + uniqueFileName);
+                Files.copy(filePath, staticFilePath, StandardCopyOption.REPLACE_EXISTING);
+
+                findHero.setPhotoUrl(uniqueFileName);
+
+            } catch (IOException e) {
+                System.err.println("Photo update failed: " + e.getMessage());
+            }
+        }
+
+        findHero.setTitle(heroDto.getTitle());
+        findHero.setSubTitle(heroDto.getSubTitle());
+        findHero.setVideoUrl(heroDto.getVideoUrl());
+
+        heroRepository.saveAndFlush(findHero);
+    }
+
+
+    @Override
+    public HeroUpdateDto findUpdateHero(Long id) {
+        Hero hero = heroRepository.findById(id).orElseThrow();
+        HeroUpdateDto heroUpdateDto = modelMapper.map(hero, HeroUpdateDto.class);
+        return heroUpdateDto;
     }
 
 }
