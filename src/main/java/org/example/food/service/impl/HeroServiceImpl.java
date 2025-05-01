@@ -3,6 +3,7 @@ package org.example.food.service.impl;
 import jdk.jfr.Category;
 import org.example.food.dtos.herodtos.HeroCreateDto;
 import org.example.food.dtos.herodtos.HeroDto;
+import org.example.food.dtos.herodtos.HeroHomeDto;
 import org.example.food.dtos.herodtos.HeroUpdateDto;
 import org.example.food.model.Hero;
 import org.example.food.payloads.APIResponse;
@@ -147,6 +148,14 @@ public class HeroServiceImpl implements HeroService {
         Hero hero = heroRepository.findById(id).orElseThrow();
         HeroUpdateDto heroUpdateDto = modelMapper.map(hero, HeroUpdateDto.class);
         return heroUpdateDto;
+    }
+
+    @Override
+    public List<HeroHomeDto> getHomeHero() {
+        List<HeroHomeDto>heroDto = heroRepository.findAll().stream()
+                .map(article -> modelMapper.map(article, HeroHomeDto.class))
+                .collect(Collectors.toList());
+        return heroDto;
     }
 
 }
