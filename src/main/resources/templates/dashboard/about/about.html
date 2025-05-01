@@ -8,5 +8,27 @@
 <div layout:fragment="container" class="container-fluid">
     <a href="/admin/about/about-create" class="btn btn-primary btn-sm">Adding data</a>
 
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Subtitle</th>
+            <th scope="col">Video url</th>
+            <th scope="col">Photo</th>
+        </tr>
+        </thead>
+        <tbody th:each="about : ${about}">
+        <tr>
+            <th scope="row" th:text="${about.id}">3</th>
+            <td th:text="${about.title}">Larry</td>
+            <td th:text="${about.description}">the Bird</td>
+            <td th:text="${about.videoUrl}">@twitter</td>
+            <td>
+                <img width="100" height="100" th:src="@{'/uploads/' + ${about.photoUrl}}" alt="photo"/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 </html>

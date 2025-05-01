@@ -1,6 +1,7 @@
 package org.example.food.service.impl;
 
 import org.example.food.dtos.aboutdtos.AboutCreateDto;
+import org.example.food.dtos.aboutdtos.AboutDto;
 import org.example.food.model.About;
 import org.example.food.repository.AboutRepository;
 import org.example.food.service.AboutService;
@@ -15,7 +16,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class AboutServiceImpl implements AboutService {
@@ -71,5 +74,12 @@ public class AboutServiceImpl implements AboutService {
         }
 
         aboutRepository.save(about);
+    }
+
+    @Override
+    public List<AboutDto> getAbout() {
+        List<AboutDto> result = aboutRepository.findAll().stream().map(about->modelMapper.map(about,AboutDto.class))
+                .collect(Collectors.toList());
+        return result;
     }
 }

@@ -1,25 +1,31 @@
 package org.example.food.controller;
 
 import org.example.food.dtos.aboutdtos.AboutCreateDto;
+import org.example.food.dtos.aboutdtos.AboutDto;
 import org.example.food.service.AboutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 @Controller
 public class AboutController {
     @Autowired
     private AboutService aboutService;
 
-    @GetMapping("/about")
-    public String About(){
-        return "home";
-    }
+//    @GetMapping("/about")
+//    public String About(){
+//        return "home";
+//    }
 
     @GetMapping("/admin/about")
-    public String about(){
+    public String about(Model model){
+        List<AboutDto> about = aboutService.getAbout();
+        model.addAttribute("about", about);
         return "/dashboard/about/about";
     }
     @GetMapping("/admin/about/about-create")
