@@ -13,9 +13,10 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Title</th>
-            <th scope="col">Subtitle</th>
+            <th scope="col">Description</th>
             <th scope="col">Video url</th>
             <th scope="col">Photo</th>
+            <th scope="col">Edit</th>
         </tr>
         </thead>
         <tbody th:each="about : ${about}">
@@ -26,6 +27,9 @@
             <td th:text="${about.videoUrl}">@twitter</td>
             <td>
                 <img width="100" height="100" th:src="@{'/uploads/' + ${about.photoUrl}}" alt="photo"/>
+            </td>
+            <td>
+                <a th:href="'/admin/about/about-edit/'+${about.id}" class="btn btn-outline-warning" ><i class="fa-solid fa-pen-to-square"></i></a>
             </td>
         </tr>
         </tbody>
