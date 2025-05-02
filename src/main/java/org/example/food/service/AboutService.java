@@ -2,6 +2,7 @@ package org.example.food.service;
 
 import org.example.food.dtos.aboutdtos.AboutCreateDto;
 import org.example.food.dtos.aboutdtos.AboutDto;
+import org.example.food.dtos.aboutdtos.AboutHomeDto;
 import org.example.food.dtos.aboutdtos.AboutUpdateDto;
 
 import java.util.List;
@@ -11,5 +12,6 @@ public interface AboutService {
     List<AboutDto> getAbout();
     void updatedAbout(AboutUpdateDto aboutUpdateDto);
     AboutUpdateDto findUpdatedAbout(Long id);
+    List<AboutHomeDto> getHomeAbout();
 
 }

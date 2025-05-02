@@ -2,6 +2,7 @@ package org.example.food.service.impl;
 
 import org.example.food.dtos.aboutdtos.AboutCreateDto;
 import org.example.food.dtos.aboutdtos.AboutDto;
+import org.example.food.dtos.aboutdtos.AboutHomeDto;
 import org.example.food.dtos.aboutdtos.AboutUpdateDto;
 import org.example.food.model.About;
 import org.example.food.repository.AboutRepository;
@@ -134,5 +135,13 @@ public class AboutServiceImpl implements AboutService {
         About about = aboutRepository.findById(id).orElseThrow();
         AboutUpdateDto aboutUpdateDto = modelMapper.map(about, AboutUpdateDto.class);
         return aboutUpdateDto;
+    }
+
+    @Override
+    public List<AboutHomeDto> getHomeAbout() {
+        List<AboutHomeDto> aboutDto = aboutRepository.findAll().stream()
+                .map(about -> modelMapper.map(about, AboutHomeDto.class))
+                .collect(Collectors.toList());
+        return aboutDto;
     }
 }
