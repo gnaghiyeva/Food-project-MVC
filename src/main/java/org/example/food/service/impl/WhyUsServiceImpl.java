@@ -1,12 +1,17 @@
 package org.example.food.service.impl;
 
+import org.example.food.dtos.herodtos.HeroDto;
 import org.example.food.dtos.whyusdtos.WhyUsCreateDto;
+import org.example.food.dtos.whyusdtos.WhyUsDto;
 import org.example.food.model.WhyUs;
 import org.example.food.repository.WhyUsRepository;
 import org.example.food.service.WhyUsService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class WhyUsServiceImpl implements WhyUsService {
@@ -30,5 +35,12 @@ public class WhyUsServiceImpl implements WhyUsService {
         System.out.println("Mapped isMain to entity: " + card.getIsMain()); // bu TRUE olmalıdır
 
         whyUsRepository.save(card);
+    }
+
+    @Override
+    public List<WhyUsDto> getCards() {
+        List<WhyUsDto> result = whyUsRepository.findAll().stream().map(hero -> modelMapper.map(hero, WhyUsDto.class))
+                .collect(Collectors.toList());
+        return result;
     }
 }

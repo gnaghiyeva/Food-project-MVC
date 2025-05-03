@@ -1,6 +1,7 @@
 package org.example.food.controller;
 
 import org.example.food.dtos.whyusdtos.WhyUsCreateDto;
+import org.example.food.dtos.whyusdtos.WhyUsDto;
 import org.example.food.service.WhyUsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+
 @Controller
 public class WhyUsController {
     @Autowired
@@ -16,6 +19,8 @@ public class WhyUsController {
 
     @GetMapping("/admin/why-us")
     public String whyUs(Model model){
+        List<WhyUsDto> cards = whyUsService.getCards();
+        model.addAttribute("cards", cards);
         return "/dashboard/why-us/why-us";
     }
     @GetMapping("/admin/why-us/why-us-create")
