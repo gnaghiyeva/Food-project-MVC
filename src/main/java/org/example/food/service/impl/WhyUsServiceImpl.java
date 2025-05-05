@@ -3,6 +3,7 @@ package org.example.food.service.impl;
 import org.example.food.dtos.herodtos.HeroDto;
 import org.example.food.dtos.whyusdtos.WhyUsCreateDto;
 import org.example.food.dtos.whyusdtos.WhyUsDto;
+import org.example.food.dtos.whyusdtos.WhyUsUpdateDto;
 import org.example.food.model.WhyUs;
 import org.example.food.repository.WhyUsRepository;
 import org.example.food.service.WhyUsService;
@@ -42,5 +43,27 @@ public class WhyUsServiceImpl implements WhyUsService {
         List<WhyUsDto> result = whyUsRepository.findAll().stream().map(hero -> modelMapper.map(hero, WhyUsDto.class))
                 .collect(Collectors.toList());
         return result;
+    }
+
+    @Override
+    public void updatedCard(WhyUsUpdateDto whyUsUpdateDto) {
+        if(whyUsUpdateDto == null || whyUsUpdateDto.getId() == null){
+            throw new IllegalArgumentException("Card or Card ID cannot be null");
+        }
+
+        WhyUs findCard = whyUsRepository.findById(whyUsUpdateDto.getId()).orElseThrow();
+        findCard.setTitle(whyUsUpdateDto.getTitle());
+        findCard.setSubTitle(whyUsUpdateDto.getSubTitle());
+        findCard.setIcon(whyUsUpdateDto.getIcon());
+        findCard.setIsMain(whyUsUpdateDto.getIsMain());
+
+        whyUsRepository.saveAndFlush(findCard);
+    }
+
+    @Override
+    public WhyUsUpdateDto findUpdatedCard(Long id) {
+        WhyUs card = whyUsRepository.findById(id).orElseThrow();
+        WhyUsUpdateDto whyUsUpdateDto = modelMapper.map(card, WhyUsUpdateDto.class);
+        return whyUsUpdateDto;
     }
 }

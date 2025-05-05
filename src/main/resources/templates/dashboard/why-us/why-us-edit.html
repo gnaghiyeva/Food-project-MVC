@@ -1,0 +1,38 @@
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/dashboard/layout}" lang="en">
+<head>
+    <title>Editing About Section</title>
+</head>
+<div layout:fragment="container" class="container-fluid">
+    <h1>SALAM</h1>
+    <div>
+        <form action="/admin/why-us/update" method="post" enctype="multipart/form-data">
+            <input type="hidden" th:value="${cards.id}" name="id" />
+
+            <div class="form-group">
+                <input th:value="${cards.title}"  class="form-control" type="text" placeholder="Title" name="title" />
+            </div>
+            <div class="form-group">
+                <input th:value="${cards.subTitle}"  class="form-control" type="text" placeholder="Subtitle" name="subTitle" />
+            </div>
+            <div class="form-group">
+                <input th:value="${cards.icon}" class="form-control" type="text" placeholder="icon" name="icon" />
+            </div>
+            <div class="form-group">
+                <label>Ana Kart?</label><br>
+
+                <input type="radio" name="isMain" value="true"
+                       th:checked="${cards.isMain} == true" /> Yes<br>
+
+                <input type="radio" name="isMain" value="false"
+                       th:checked="${cards.isMain} == false" /> No
+            </div>
+
+
+            <input type="submit" value="Update" class="btn btn-warning" />
+        </form>
+    </div>
+</div>
+</html>
