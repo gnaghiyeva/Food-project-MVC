@@ -3,6 +3,7 @@ package org.example.food.service.impl;
 import org.example.food.dtos.herodtos.HeroDto;
 import org.example.food.dtos.whyusdtos.WhyUsCreateDto;
 import org.example.food.dtos.whyusdtos.WhyUsDto;
+import org.example.food.dtos.whyusdtos.WhyUsHomeDto;
 import org.example.food.dtos.whyusdtos.WhyUsUpdateDto;
 import org.example.food.model.WhyUs;
 import org.example.food.repository.WhyUsRepository;
@@ -71,5 +72,11 @@ public class WhyUsServiceImpl implements WhyUsService {
     public void removeCard(Long id) {
         WhyUs card = whyUsRepository.findById(id).orElseThrow();
         whyUsRepository.delete(card);
+    }
+
+    @Override
+    public List<WhyUsHomeDto> getHomeCards() {
+        List<WhyUsHomeDto> allCards = whyUsRepository.findAll().stream().map(card->modelMapper.map(card, WhyUsHomeDto.class)).collect(Collectors.toList());
+        return allCards;
     }
 }
