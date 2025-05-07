@@ -50,4 +50,10 @@ public class WhyUsController {
         whyUsService.updatedCard(whyUsUpdateDto);
         return "redirect:/admin/why-us";
     }
+
+    @GetMapping("/admin/why-us/remove/{id}")
+    public String removeCard(@ModelAttribute @PathVariable Long id){
+        whyUsService.removeCard(id);
+        return "redirect:/admin/why-us";
+    }
 }

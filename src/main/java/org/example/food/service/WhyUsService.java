@@ -11,4 +11,5 @@ public interface WhyUsService {
     List<WhyUsDto> getCards();
     void updatedCard(WhyUsUpdateDto whyUsUpdateDto);
     WhyUsUpdateDto findUpdatedCard(Long id);
+    void removeCard(Long id);
 }

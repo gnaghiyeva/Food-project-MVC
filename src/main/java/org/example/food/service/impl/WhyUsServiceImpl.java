@@ -66,4 +66,10 @@ public class WhyUsServiceImpl implements WhyUsService {
         WhyUsUpdateDto whyUsUpdateDto = modelMapper.map(card, WhyUsUpdateDto.class);
         return whyUsUpdateDto;
     }
+
+    @Override
+    public void removeCard(Long id) {
+        WhyUs card = whyUsRepository.findById(id).orElseThrow();
+        whyUsRepository.delete(card);
+    }
 }
