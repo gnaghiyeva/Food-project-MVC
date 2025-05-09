@@ -12,12 +12,16 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
+            <th scope="col">Edit</th>
         </tr>
         </thead>
         <tbody th:each="category : ${categories}">
         <tr>
             <th scope="row" th:text="${category.id}">3</th>
             <td th:text="${category.name}">Larry</td>
+            <td>
+                <a th:href="'/admin/category/category-edit/'+${category.id}" class="btn btn-outline-warning" ><i class="fa-solid fa-pen-to-square"></i></a>
+            </td>
         </tr>
         </tbody>
     </table>

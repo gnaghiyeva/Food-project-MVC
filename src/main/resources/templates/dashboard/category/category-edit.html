@@ -1,0 +1,23 @@
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/dashboard/layout}" lang="en">
+<head>
+  <title>Edit Category</title>
+</head>
+<div layout:fragment="container" class="container-fluid">
+  <h1>SALAM</h1>
+  <div>
+    <form action="/admin/category/update" method="post">
+      <input type="hidden" th:value="${category.id}" name="id" />
+
+      <div class="form-group">
+        <input th:value="${category.name}"  class="form-control" type="text" placeholder="Name" name="name" />
+      </div>
+
+      <input type="submit" value="Update" class="btn btn-success" />
+
+    </form>
+  </div>
+</div>
+</html>
