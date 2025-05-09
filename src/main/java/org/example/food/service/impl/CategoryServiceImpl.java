@@ -2,6 +2,7 @@ package org.example.food.service.impl;
 
 import org.example.food.dtos.categorydtos.CategoryCreateDto;
 import org.example.food.dtos.categorydtos.CategoryDto;
+import org.example.food.dtos.categorydtos.CategoryHomeDto;
 import org.example.food.dtos.categorydtos.CategoryUpdateDto;
 import org.example.food.model.Category;
 import org.example.food.repository.CategoryRepository;
@@ -51,5 +52,11 @@ public class CategoryServiceImpl implements CategoryService {
     public void removeCategory(Long id) {
         Category category = categoryRepository.findById(id).orElseThrow();
         categoryRepository.delete(category);
+    }
+
+    @Override
+    public List<CategoryHomeDto> getHomeCategories() {
+        List<CategoryHomeDto> categories = categoryRepository.findAll().stream().map(category -> modelMapper.map(category, CategoryHomeDto.class)).collect(Collectors.toList());
+        return categories;
     }
 }
