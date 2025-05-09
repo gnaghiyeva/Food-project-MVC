@@ -50,4 +50,9 @@ public class CategoryController {
         return "redirect:/admin/category";
     }
 
+    @GetMapping("/admin/category/remove/{id}")
+    public String removeCategory(@ModelAttribute @PathVariable Long id){
+        categoryService.removeCategory(id);
+        return "redirect:/admin/category";
+    }
 }
