@@ -7,6 +7,19 @@
 </head>
 <div layout:fragment="container" class="container-fluid">
     <a href="/admin/category/category-create" class="btn btn-primary btn-sm">Add Category</a>
-
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+        </tr>
+        </thead>
+        <tbody th:each="category : ${categories}">
+        <tr>
+            <th scope="row" th:text="${category.id}">3</th>
+            <td th:text="${category.name}">Larry</td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 </html>
