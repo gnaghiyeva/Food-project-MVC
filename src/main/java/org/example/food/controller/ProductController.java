@@ -3,8 +3,10 @@ package org.example.food.controller;
 import org.example.food.dtos.aboutdtos.AboutCreateDto;
 import org.example.food.dtos.categorydtos.CategoryDto;
 import org.example.food.dtos.herodtos.HeroDto;
+import org.example.food.dtos.herodtos.HeroUpdateDto;
 import org.example.food.dtos.productdtos.ProductCreateDto;
 import org.example.food.dtos.productdtos.ProductDto;
+import org.example.food.dtos.productdtos.ProductUpdateDto;
 import org.example.food.service.CategoryService;
 import org.example.food.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,5 +53,19 @@ public class ProductController {
         return "redirect:/admin/product";
     }
 
+    @GetMapping("/admin/product/product-edit/{id}")
+    public String updateProduct(@ModelAttribute @PathVariable Long id, Model model){
+        ProductUpdateDto productUpdateDto = productService.findUpdatedProduct(id);
+        List<CategoryDto> categories = categoryService.getCategories();
+        model.addAttribute("categories", categories);
+        model.addAttribute("product", productUpdateDto);
+        return "dashboard/product/product-edit";
+    }
+
+    @PostMapping("/admin/product/update")
+    public String updateHero(@ModelAttribute ProductUpdateDto productUpdateDto) {
+        productService.updateProduct(productUpdateDto);
+        return "redirect:/admin/product";
+    }
 
 }

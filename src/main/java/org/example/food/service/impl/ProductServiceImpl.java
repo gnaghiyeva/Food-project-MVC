@@ -3,6 +3,7 @@ package org.example.food.service.impl;
 import jakarta.transaction.Transactional;
 import org.example.food.dtos.productdtos.ProductCreateDto;
 import org.example.food.dtos.productdtos.ProductDto;
+import org.example.food.dtos.productdtos.ProductUpdateDto;
 import org.example.food.model.Category;
 import org.example.food.model.Product;
 import org.example.food.repository.CategoryRepository;
@@ -130,6 +131,67 @@ public class ProductServiceImpl implements ProductService {
         }
 
         productRepository.delete(product);
+    }
+
+    @Override
+    public void updateProduct(ProductUpdateDto productUpdateDto) {
+        Product findProduct = productRepository.findById(productUpdateDto.getId()).orElseThrow();
+        Category category = categoryRepository.findById(productUpdateDto.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        MultipartFile file = productUpdateDto.getPhotoFile();
+        if (file != null && !file.isEmpty()) {
+            try {
+                // Köhnə şəkli sil
+                String oldFileName = findProduct.getPhotoUrl();
+                if (oldFileName != null && !oldFileName.isEmpty()) {
+                    Path oldUploadPath = Paths.get(UPLOAD_DIR + oldFileName);
+                    Files.deleteIfExists(oldUploadPath);
+
+                    Path oldStaticPath = Paths.get(STATIC_UPLOAD_DIR + oldFileName);
+                    Files.deleteIfExists(oldStaticPath);
+                }
+
+                // Yeni şəkli yüklə
+                String originalFileName = file.getOriginalFilename();
+                String fileExtension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+                String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
+
+                File uploadDir = new File(UPLOAD_DIR);
+                if (!uploadDir.exists()) uploadDir.mkdirs();
+                Path filePath = Paths.get(UPLOAD_DIR + uniqueFileName);
+                Files.write(filePath, file.getBytes());
+
+                File staticUploadDir = new File(STATIC_UPLOAD_DIR);
+                if (!staticUploadDir.exists()) staticUploadDir.mkdirs();
+                Path staticFilePath = Paths.get(STATIC_UPLOAD_DIR + uniqueFileName);
+                Files.copy(filePath, staticFilePath, StandardCopyOption.REPLACE_EXISTING);
+
+                // Yalnız yeni şəkil varsa, photoUrl yenilə
+                findProduct.setPhotoUrl(uniqueFileName);
+
+            } catch (IOException e) {
+                System.err.println("Foto yenilənərkən xəta baş verdi: " + e.getMessage());
+                return;
+            }
+        }
+// Əks halda photoUrl olduğu kimi saxlanacaq
+
+
+        findProduct.setId(productUpdateDto.getId());
+        findProduct.setName(productUpdateDto.getName());
+        findProduct.setIngredient(productUpdateDto.getIngredient());
+        findProduct.setPrice(Long.valueOf(productUpdateDto.getPrice()));
+        findProduct.setCategory(category);
+        findProduct.setUpdatedDate(new Date());
+        productRepository.saveAndFlush(findProduct);
+    }
+
+    @Override
+    public ProductUpdateDto findUpdatedProduct(Long id) {
+        Product product = productRepository.findById(id).orElseThrow();
+        ProductUpdateDto productUpdateDto = modelMapper.map(product, ProductUpdateDto.class);
+        return productUpdateDto;
     }
 
 }
