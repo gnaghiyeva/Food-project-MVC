@@ -3,6 +3,7 @@ package org.example.food.service.impl;
 import jakarta.transaction.Transactional;
 import org.example.food.dtos.productdtos.ProductCreateDto;
 import org.example.food.dtos.productdtos.ProductDto;
+import org.example.food.dtos.productdtos.ProductHomeDto;
 import org.example.food.dtos.productdtos.ProductUpdateDto;
 import org.example.food.model.Category;
 import org.example.food.model.Product;
@@ -192,6 +193,12 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(id).orElseThrow();
         ProductUpdateDto productUpdateDto = modelMapper.map(product, ProductUpdateDto.class);
         return productUpdateDto;
+    }
+
+    @Override
+    public List<ProductHomeDto> getHomeProducts() {
+        List<ProductHomeDto> productHomeDtos = productRepository.findAll().stream().map(product -> modelMapper.map(product, ProductHomeDto.class)).collect(Collectors.toList());
+        return productHomeDtos;
     }
 
 }
