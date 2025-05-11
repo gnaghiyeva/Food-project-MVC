@@ -3,10 +3,37 @@
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{/dashboard/layout}" lang="en">
 <head>
-    <title>About</title>
+    <title>Products</title>
 </head>
 <div layout:fragment="container" class="container-fluid">
     <a href="/admin/product/product-create" class="btn btn-primary btn-sm">Adding product</a>
-
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Photo</th>
+            <th scope="col">Price</th>
+            <th scope="col">Ingredient</th>
+            <th scope="col">Category</th>
+            <th scope="col">Created date</th>
+            <th scope="col">Updated date</th>
+        </tr>
+        </thead>
+        <tbody th:each="product : ${products}">
+        <tr>
+            <th scope="row" th:text="${product.id}">3</th>
+            <td th:text="${product.name}">Larry</td>
+            <td>
+                <img width="100" height="100" th:src="@{'/uploads/' + ${product.photoUrl}}" alt="photo"/>
+            </td>
+            <td th:text="${product.price}">Larry</td>
+            <td th:text="${product.ingredient}">Larry</td>
+            <td th:text="${product.category.name}">Larry</td>
+            <td th:text="${product.createdDate}"></td>
+            <td th:text="${product.updatedDate}"></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 </html>

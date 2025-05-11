@@ -4,6 +4,7 @@ import org.example.food.dtos.aboutdtos.AboutCreateDto;
 import org.example.food.dtos.categorydtos.CategoryDto;
 import org.example.food.dtos.herodtos.HeroDto;
 import org.example.food.dtos.productdtos.ProductCreateDto;
+import org.example.food.dtos.productdtos.ProductDto;
 import org.example.food.service.CategoryService;
 import org.example.food.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,9 @@ public class ProductController {
     private CategoryService categoryService;
 
     @GetMapping("/admin/product")
-    public String product(){
+    public String product(Model model){
+        List<ProductDto> productList = productService.getProducts();
+        model.addAttribute("products", productList);
         return "/dashboard/product/product";
     }
     @GetMapping("/admin/product/product-create")

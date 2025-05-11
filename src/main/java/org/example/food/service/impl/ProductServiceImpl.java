@@ -2,6 +2,7 @@ package org.example.food.service.impl;
 
 import jakarta.transaction.Transactional;
 import org.example.food.dtos.productdtos.ProductCreateDto;
+import org.example.food.dtos.productdtos.ProductDto;
 import org.example.food.model.Category;
 import org.example.food.model.Product;
 import org.example.food.repository.CategoryRepository;
@@ -19,7 +20,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -86,5 +89,11 @@ public class ProductServiceImpl implements ProductService {
         product.setUpdatedDate(new Date());
         productRepository.saveAndFlush(product);
 
+    }
+
+    @Override
+    public List<ProductDto> getProducts() {
+        List<ProductDto> products = productRepository.findAll().stream().map(product -> modelMapper.map(product,ProductDto.class)).collect(Collectors.toList());
+        return products;
     }
 }
