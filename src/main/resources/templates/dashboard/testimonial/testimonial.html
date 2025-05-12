@@ -7,6 +7,30 @@
 </head>
 <div layout:fragment="container" class="container-fluid">
     <a href="/admin/testimonial/testimonial-create" class="btn btn-primary btn-sm">Add</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Photo</th>
+            <th scope="col">Full Name</th>
+            <th scope="col">Job</th>
+            <th scope="col">Thoughts</th>
+            <th scope="col">Rating</th>
+        </tr>
+        </thead>
+        <tbody th:each="testimonial : ${testimonials}">
+        <tr>
+            <th scope="row" th:text="${testimonial.id}">3</th>
+            <td>
+                <img width="100" height="100" th:src="@{'/uploads/' + ${testimonial.photoUrl}}" alt="photo"/>
+            </td>
+            <td th:text="${testimonial.fullName}">Larry</td>
+            <td th:text="${testimonial.job}">Larry</td>
+            <td th:text="${testimonial.thoughts}">Larry</td>
+            <td th:text="${testimonial.rating}">Larry</td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
 </html>

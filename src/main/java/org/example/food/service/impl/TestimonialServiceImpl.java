@@ -1,6 +1,7 @@
 package org.example.food.service.impl;
 
 import org.example.food.dtos.testimonialdto.TestimonialCreateDto;
+import org.example.food.dtos.testimonialdto.TestimonialDto;
 import org.example.food.model.Testimonial;
 import org.example.food.repository.TestimonialRepository;
 import org.example.food.service.TestimonialService;
@@ -15,7 +16,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class TestimonialServiceImpl implements TestimonialService {
@@ -70,5 +73,12 @@ public class TestimonialServiceImpl implements TestimonialService {
         }
 
         testimonialRepository.save(testimonial);
+    }
+
+    @Override
+    public List<TestimonialDto> getTestimonial() {
+        List<TestimonialDto> testimonials = testimonialRepository.findAll().stream().map(testimonial -> modelMapper.map(testimonial, TestimonialDto.class))
+                .collect(Collectors.toList());
+        return testimonials;
     }
 }
