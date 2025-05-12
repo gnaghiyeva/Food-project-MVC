@@ -4,6 +4,7 @@ import org.example.food.dtos.aboutdtos.AboutHomeDto;
 import org.example.food.dtos.categorydtos.CategoryHomeDto;
 import org.example.food.dtos.herodtos.HeroHomeDto;
 import org.example.food.dtos.productdtos.ProductHomeDto;
+import org.example.food.dtos.testimonialdto.TestimonialHomeDto;
 import org.example.food.dtos.whyusdtos.WhyUsHomeDto;
 import org.example.food.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class HomeController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private TestimonialService testimonialService;
+
     @GetMapping("/")
     public String home(Model model){
         List<HeroHomeDto> homeHero = heroService.getHomeHero();
@@ -37,11 +41,13 @@ public class HomeController {
         List<WhyUsHomeDto> homeCards = whyUsService.getHomeCards();
         List<CategoryHomeDto> homeCategories = categoryService.getHomeCategories();
         List<ProductHomeDto> homeProducts = productService.getHomeProducts();
+        List<TestimonialHomeDto> homeTestimonials = testimonialService.getHomeTestimonials();
         model.addAttribute("hero", homeHero);
         model.addAttribute("about", homeAbout);
         model.addAttribute("cards", homeCards);
         model.addAttribute("categories", homeCategories);
         model.addAttribute("products", homeProducts);
+        model.addAttribute("testimonials", homeTestimonials);
         return "home";
     }
 }

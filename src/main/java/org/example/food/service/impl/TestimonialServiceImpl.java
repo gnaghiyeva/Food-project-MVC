@@ -1,7 +1,9 @@
 package org.example.food.service.impl;
 
+import org.example.food.dtos.productdtos.ProductHomeDto;
 import org.example.food.dtos.testimonialdto.TestimonialCreateDto;
 import org.example.food.dtos.testimonialdto.TestimonialDto;
+import org.example.food.dtos.testimonialdto.TestimonialHomeDto;
 import org.example.food.dtos.testimonialdto.TestimonialUpdateDto;
 import org.example.food.model.Testimonial;
 import org.example.food.repository.TestimonialRepository;
@@ -170,5 +172,11 @@ public class TestimonialServiceImpl implements TestimonialService {
         }
 
         testimonialRepository.delete(testimonial);
+    }
+
+    @Override
+    public List<TestimonialHomeDto> getHomeTestimonials() {
+        List<TestimonialHomeDto> testimonialHomeDtos = testimonialRepository.findAll().stream().map(testimonial -> modelMapper.map(testimonial, TestimonialHomeDto.class)).collect(Collectors.toList());
+        return testimonialHomeDtos;
     }
 }
