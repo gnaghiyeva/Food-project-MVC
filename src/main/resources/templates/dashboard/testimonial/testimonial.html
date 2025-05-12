@@ -16,6 +16,7 @@
             <th scope="col">Job</th>
             <th scope="col">Thoughts</th>
             <th scope="col">Rating</th>
+            <th scope="col">Edit</th>
         </tr>
         </thead>
         <tbody th:each="testimonial : ${testimonials}">
@@ -28,6 +29,9 @@
             <td th:text="${testimonial.job}">Larry</td>
             <td th:text="${testimonial.thoughts}">Larry</td>
             <td th:text="${testimonial.rating}">Larry</td>
+            <td>
+                <a th:href="'/admin/testimonial/testimonial-edit/'+${testimonial.id}" class="btn btn-outline-warning" ><i class="fa-solid fa-pen-to-square"></i></a>
+            </td>
         </tr>
         </tbody>
     </table>
