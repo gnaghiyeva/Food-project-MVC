@@ -11,4 +11,5 @@ public interface TestimonialService {
     List<TestimonialDto> getTestimonial();
     void updateTestimonial(TestimonialUpdateDto testimonialUpdateDto);
     TestimonialUpdateDto findUpdatedTestimonial(Long id);
+    void removeTestimonial(Long id);
 }

@@ -137,4 +137,38 @@ public class TestimonialServiceImpl implements TestimonialService {
         TestimonialUpdateDto testimonialUpdateDto = modelMapper.map(testimonial,TestimonialUpdateDto.class);
         return testimonialUpdateDto;
     }
+
+    @Override
+    public void removeTestimonial(Long id) {
+        Testimonial testimonial = testimonialRepository.findById(id).orElseThrow();
+        String photoUrl = testimonial.getPhotoUrl();
+        if (photoUrl != null && !photoUrl.isEmpty()) {
+
+            String fileName = photoUrl.substring(photoUrl.lastIndexOf("/") + 1);
+
+            // 2. UPLOAD_DIR yolundan sil
+            File imageFile = new File(UPLOAD_DIR + fileName);
+            if (imageFile.exists()) {
+                if (imageFile.delete()) {
+                    System.out.println("Photo deleted from UPLOAD_DIR: " + imageFile.getPath());
+                } else {
+                    System.out.println("Photo can not deleted from UPLOAD_DIR: " + imageFile.getPath());
+                }
+            }
+
+            // 3. STATIC_UPLOAD_DIR yolundan sil
+            File staticImageFile = new File(STATIC_UPLOAD_DIR + fileName);
+            if (staticImageFile.exists()) {
+                if (staticImageFile.delete()) {
+                    System.out.println("Photo deleted from STATIC_UPLOAD_DIR: " + staticImageFile.getPath());
+                } else {
+                    System.out.println("Photo can not deleted from STATIC_UPLOAD_DIR: " + staticImageFile.getPath());
+                }
+            }
+        } else {
+            System.out.println("Foto URL not exist or empty.");
+        }
+
+        testimonialRepository.delete(testimonial);
+    }
 }

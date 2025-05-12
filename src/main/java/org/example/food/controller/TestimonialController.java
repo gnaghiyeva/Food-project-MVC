@@ -52,4 +52,10 @@ public class TestimonialController {
         testimonialService.updateTestimonial(testimonialUpdateDto);
         return "redirect:/admin/testimonial";
     }
+
+    @GetMapping("/admin/testimonial/remove/{id}")
+    public String removeTestimonial(@ModelAttribute @PathVariable Long id){
+        testimonialService.removeTestimonial(id);
+        return "redirect:/admin/testimonial";
+    }
 }

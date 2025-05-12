@@ -17,6 +17,7 @@
             <th scope="col">Thoughts</th>
             <th scope="col">Rating</th>
             <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
         </tr>
         </thead>
         <tbody th:each="testimonial : ${testimonials}">
@@ -32,9 +33,52 @@
             <td>
                 <a th:href="'/admin/testimonial/testimonial-edit/'+${testimonial.id}" class="btn btn-outline-warning" ><i class="fa-solid fa-pen-to-square"></i></a>
             </td>
+            <td>
+                <button th:onclick="'remove('+${testimonial.id}+')'" class="btn btn-outline-danger btn-sm">Delete</button>
+            </td>
         </tr>
         </tbody>
     </table>
 </div>
+<th:block layout:fragment="myScript">
+    <script>
+        function remove(id) {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: "btn btn-success",
+                    cancelButton: "btn btn-danger"
+                },
+                buttonsStyling: false
+            });
+            swalWithBootstrapButtons.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!",
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        icon: "success"
+                    });
+                    window.location="/admin/testimonial/remove/"+id;
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Cancelled",
+                        text: "Your imaginary file is safe :)",
+                        icon: "error"
+                    });
+                }
+            });
+        }
+    </script>
 
+</th:block>
 </html>
