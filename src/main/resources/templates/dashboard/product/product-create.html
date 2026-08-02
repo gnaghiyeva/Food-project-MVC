@@ -1,0 +1,35 @@
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/dashboard/layout}" lang="en">
+<head>
+    <title>Create Product</title>
+</head>
+<div layout:fragment="container" class="container-fluid">
+    <h1>SALAM</h1>
+    <div>
+        <form action="/admin/product/create" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <input class="form-control" type="text" placeholder="Name" name="name" />
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" placeholder="Ingredients" name="ingredient" />
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="number" placeholder="Price $" name="price" />
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="file" placeholder="photoUrl" name="photoFile" />
+            </div>
+
+            <div class="form-group">
+                <select name="categoryId"  class="form-control" >
+                    <option th:each="category : ${categories}" th:text="${category.name}" th:value="${category.id}"></option>
+                </select>
+            </div>
+
+            <input type="submit" value="Create" class="btn btn-success" />
+        </form>
+    </div>
+</div>
+</html>

@@ -1,0 +1,71 @@
+package org.example.food.controller;
+
+import org.example.food.dtos.aboutdtos.AboutCreateDto;
+import org.example.food.dtos.categorydtos.CategoryDto;
+import org.example.food.dtos.herodtos.HeroDto;
+import org.example.food.dtos.herodtos.HeroUpdateDto;
+import org.example.food.dtos.productdtos.ProductCreateDto;
+import org.example.food.dtos.productdtos.ProductDto;
+import org.example.food.dtos.productdtos.ProductUpdateDto;
+import org.example.food.service.CategoryService;
+import org.example.food.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
+
+@Controller
+public class ProductController {
+    @Autowired
+    private ProductService productService;
+
+    @Autowired
+    private CategoryService categoryService;
+
+    @GetMapping("/admin/product")
+    public String product(Model model){
+        List<ProductDto> productList = productService.getProducts();
+        model.addAttribute("products", productList);
+        return "/dashboard/product/product";
+    }
+    @GetMapping("/admin/product/product-create")
+    public String createProduct(Model model){
+        List<CategoryDto> categories = categoryService.getCategories();
+        model.addAttribute("categories", categories);
+
+        return "/dashboard/product/product-create";
+    }
+
+    @PostMapping("/admin/product/create")
+    public String createProduct(@ModelAttribute ProductCreateDto productCreateDto){
+        productService.addProduct(productCreateDto);
+        return "redirect:/admin/product";
+    }
+
+    @GetMapping("/admin/product/remove/{id}")
+    public String removeArticle(@ModelAttribute @PathVariable Long id){
+        productService.removeProduct(id);
+        return "redirect:/admin/product";
+    }
+
+    @GetMapping("/admin/product/product-edit/{id}")
+    public String updateProduct(@ModelAttribute @PathVariable Long id, Model model){
+        ProductUpdateDto productUpdateDto = productService.findUpdatedProduct(id);
+        List<CategoryDto> categories = categoryService.getCategories();
+        model.addAttribute("categories", categories);
+        model.addAttribute("product", productUpdateDto);
+        return "dashboard/product/product-edit";
+    }
+
+    @PostMapping("/admin/product/update")
+    public String updateHero(@ModelAttribute ProductUpdateDto productUpdateDto) {
+        productService.updateProduct(productUpdateDto);
+        return "redirect:/admin/product";
+    }
+
+}
