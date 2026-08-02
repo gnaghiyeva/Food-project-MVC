@@ -1,0 +1,34 @@
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/dashboard/layout}" lang="en">
+<head>
+    <title>Update Testimonial</title>
+</head>
+<div layout:fragment="container" class="container-fluid">
+    <h1>SALAM</h1>
+    <div>
+        <form action="/admin/testimonial/update" method="post" enctype="multipart/form-data">
+            <input type="hidden" th:value="${testimonial.id}" name="id" />
+
+            <div class="form-group">
+                <input th:value="${testimonial.fullName}"  class="form-control" type="text" placeholder="FullName" name="fullName" />
+            </div>
+            <div class="form-group">
+                <input th:value="${testimonial.job}"  class="form-control" type="text" placeholder="Job" name="job" />
+            </div>
+            <div class="form-group">
+                <input th:value="${testimonial.thoughts}"  class="form-control" type="text" placeholder="Thoughts" name="thoughts" />
+            </div>
+            <div class="form-group">
+                <input th:value="${testimonial.rating}"  class="form-control" type="number" placeholder="Rating" name="rating" />
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="file" placeholder="photoUrl" name="photoFile" />
+            </div>
+
+            <input type="submit" value="Update" class="btn btn-success" />
+        </form>
+    </div>
+</div>
+</html>
