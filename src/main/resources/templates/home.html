@@ -11,17 +11,17 @@
     <section id="hero" class="hero section light-background">
 
         <div class="container">
-            <div class="row gy-4 justify-content-center justify-content-lg-between">
-                <div class="col-lg-5 order-2 order-lg-1 d-flex flex-column justify-content-center">
-                    <h1 data-aos="fade-up">Enjoy Your Healthy<br>Delicious Food</h1>
-                    <p data-aos="fade-up" data-aos-delay="100">We are team of talented designers making websites with Bootstrap</p>
+            <div class="row gy-4 justify-content-center justify-content-lg-between" th:each="hero:${hero}">
+                <div class="col-lg-5 order-2 order-lg-1 d-flex flex-column justify-content-center" >
+                    <h1 data-aos="fade-up" th:text="${hero.title}">Enjoy Your Healthy<br>Delicious Food</h1>
+                    <p data-aos="fade-up" data-aos-delay="100" th:text="${hero.subTitle}">We are team of talented designers making websites with Bootstrap</p>
                     <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
                         <a href="#book-a-table" class="btn-get-started">Booka a Table</a>
-                        <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
+                        <a th:href="${hero.videoUrl}" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
                     </div>
                 </div>
                 <div class="col-lg-5 order-1 order-lg-2 hero-img" data-aos="zoom-out">
-                    <img th:src="@{/assets/img/hero-img.png}" class="img-fluid animated" alt="">
+                    <img th:src="@{'/uploads/' + ${hero.photoUrl}}" class="img-fluid animated" alt="">
                 </div>
             </div>
         </div>
@@ -142,28 +142,28 @@
 
                 <div class="col-lg-3 col-md-6">
                     <div class="stats-item text-center w-100 h-100">
-                        <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1" class="purecounter"></span>
+                        <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1" class="purecounter">6</span>
                         <p>Clients</p>
                     </div>
                 </div><!-- End Stats Item -->
 
                 <div class="col-lg-3 col-md-6">
                     <div class="stats-item text-center w-100 h-100">
-                        <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1" class="purecounter"></span>
+                        <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1" class="purecounter">7</span>
                         <p>Projects</p>
                     </div>
                 </div><!-- End Stats Item -->
 
                 <div class="col-lg-3 col-md-6">
                     <div class="stats-item text-center w-100 h-100">
-                        <span data-purecounter-start="0" data-purecounter-end="1453" data-purecounter-duration="1" class="purecounter"></span>
+                        <span data-purecounter-start="0" data-purecounter-end="1453" data-purecounter-duration="1" class="purecounter">8</span>
                         <p>Hours Of Support</p>
                     </div>
                 </div><!-- End Stats Item -->
 
                 <div class="col-lg-3 col-md-6">
                     <div class="stats-item text-center w-100 h-100">
-                        <span data-purecounter-start="0" data-purecounter-end="32" data-purecounter-duration="1" class="purecounter"></span>
+                        <span data-purecounter-start="0" data-purecounter-end="32" data-purecounter-duration="1" class="purecounter">9</span>
                         <p>Workers</p>
                     </div>
                 </div><!-- End Stats Item -->
@@ -545,20 +545,22 @@
         <div class="container" data-aos="fade-up" data-aos-delay="100">
 
             <div class="swiper init-swiper">
-                <script type="application/json" class="swiper-config">
-                    {
-                        "loop": true,
-                        "speed": 600,
-                        "autoplay": {
-                            "delay": 5000
-                        },
-                        "slidesPerView": "auto",
-                        "pagination": {
-                            "el": ".swiper-pagination",
-                            "type": "bullets",
-                            "clickable": true
-                        }
-                    }
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        var swiper = new Swiper('#testimonials .init-swiper', {
+                            loop: true,
+                            speed: 600,
+                            autoplay: {
+                                delay: 5000
+                            },
+                            slidesPerView: 'auto',
+                            pagination: {
+                                el: '#testimonials .swiper-pagination',
+                                type: 'bullets',
+                                clickable: true
+                            }
+                        });
+                    });
                 </script>
                 <div class="swiper-wrapper">
 
@@ -580,7 +582,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-2 text-center">
-                                    <img src="assets/img/testimonials/testimonials-1.jpg" class="img-fluid testimonial-img" alt="">
+                                    <img th:src="@{/assets/img/testimonials/testimonials-1.jpg}" class="img-fluid testimonial-img" alt="">
                                 </div>
                             </div>
                         </div>
@@ -604,7 +606,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-2 text-center">
-                                    <img src="assets/img/testimonials/testimonials-2.jpg" class="img-fluid testimonial-img" alt="">
+                                    <img th:src="@{/assets/img/testimonials/testimonials-2.jpg}" class="img-fluid testimonial-img" alt="">
                                 </div>
                             </div>
                         </div>
@@ -628,7 +630,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-2 text-center">
-                                    <img src="assets/img/testimonials/testimonials-3.jpg" class="img-fluid testimonial-img" alt="">
+                                    <img th:src="@{/assets/img/testimonials/testimonials-3.jpg}" class="img-fluid testimonial-img" alt="">
                                 </div>
                             </div>
                         </div>
@@ -652,7 +654,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-2 text-center">
-                                    <img src="assets/img/testimonials/testimonials-4.jpg" class="img-fluid testimonial-img" alt="">
+                                    <img th:src="@{/assets/img/testimonials/testimonials-4.jpg}" class="img-fluid testimonial-img" alt="">
                                 </div>
                             </div>
                         </div>
@@ -663,6 +665,10 @@
             </div>
 
         </div>
+        <!-- Swiper JS (Only for this section) -->
+        <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+
+        <!-- Initialize Swiper -->
 
     </section><!-- /Testimonials Section -->
 
@@ -672,31 +678,7 @@
         <div class="container-fluid" data-aos="fade-up" data-aos-delay="100">
 
             <div class="swiper init-swiper">
-                <script type="application/json" class="swiper-config">
-                    {
-                        "loop": true,
-                        "speed": 600,
-                        "autoplay": {
-                            "delay": 5000
-                        },
-                        "slidesPerView": "auto",
-                        "pagination": {
-                            "el": ".swiper-pagination",
-                            "type": "bullets",
-                            "clickable": true
-                        },
-                        "breakpoints": {
-                            "320": {
-                                "slidesPerView": 1,
-                                "spaceBetween": 40
-                            },
-                            "1200": {
-                                "slidesPerView": 3,
-                                "spaceBetween": 1
-                            }
-                        }
-                    }
-                </script>
+
                 <div class="swiper-wrapper">
 
                     <div class="swiper-slide event-item d-flex flex-column justify-content-end" style="background-image: url(assets/img/events-1.jpg)">
@@ -737,6 +719,36 @@
 
         </div>
 
+        <!-- Swiper JS (Only for this section) -->
+        <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+        <script>
+
+            document.addEventListener("DOMContentLoaded", function() {
+                var swiper = new Swiper('#events .init-swiper', {
+                    "loop": true,
+                    "speed": 600,
+                    "autoplay": {
+                        "delay": 5000
+                    },
+                    "slidesPerView": "auto",
+                    "pagination": {
+                        "el": ".swiper-pagination",
+                        "type": "bullets",
+                        "clickable": true
+                    },
+                    "breakpoints": {
+                        "320": {
+                            "slidesPerView": 1,
+                            "spaceBetween": 40
+                        },
+                        "1200": {
+                            "slidesPerView": 3,
+                            "spaceBetween": 1
+                        }
+                    }
+                });
+            });
+        </script>
     </section><!-- /Events Section -->
 
     <!-- Chefs Section -->
@@ -884,35 +896,37 @@
         <div class="container" data-aos="fade-up" data-aos-delay="100">
 
             <div class="swiper init-swiper">
-                <script type="application/json" class="swiper-config">
-                    {
-                        "loop": true,
-                        "speed": 600,
-                        "autoplay": {
-                            "delay": 5000
-                        },
-                        "slidesPerView": "auto",
-                        "centeredSlides": true,
-                        "pagination": {
-                            "el": ".swiper-pagination",
-                            "type": "bullets",
-                            "clickable": true
-                        },
-                        "breakpoints": {
-                            "320": {
-                                "slidesPerView": 1,
-                                "spaceBetween": 0
+                <script  class="swiper-config">
+                    document.addEventListener("DOMContentLoaded", function() {
+                        var swiper = new Swiper('#gallery .init-swiper', {
+                            "loop": true,
+                            "speed": 600,
+                            "autoplay": {
+                                "delay": 5000
                             },
-                            "768": {
-                                "slidesPerView": 3,
-                                "spaceBetween": 20
+                            "slidesPerView": "auto",
+                            "centeredSlides": true,
+                            "pagination": {
+                                "el": ".swiper-pagination",
+                                "type": "bullets",
+                                "clickable": true
                             },
-                            "1200": {
-                                "slidesPerView": 5,
-                                "spaceBetween": 20
+                            "breakpoints": {
+                                "320": {
+                                    "slidesPerView": 1,
+                                    "spaceBetween": 0
+                                },
+                                "768": {
+                                    "slidesPerView": 3,
+                                    "spaceBetween": 20
+                                },
+                                "1200": {
+                                    "slidesPerView": 5,
+                                    "spaceBetween": 20
+                                }
                             }
-                        }
-                    }
+                        });
+                    });
                 </script>
                 <div class="swiper-wrapper align-items-center">
                     <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="assets/img/gallery/gallery-1.jpg"><img src="assets/img/gallery/gallery-1.jpg" class="img-fluid" alt=""></a></div>
