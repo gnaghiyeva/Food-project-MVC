@@ -2,6 +2,8 @@ package org.example.food.controller;
 
 import org.example.food.dtos.aboutdtos.AboutHomeDto;
 import org.example.food.dtos.categorydtos.CategoryHomeDto;
+import org.example.food.dtos.eventdtos.EventDto;
+import org.example.food.dtos.eventdtos.EventHomeDto;
 import org.example.food.dtos.herodtos.HeroHomeDto;
 import org.example.food.dtos.productdtos.ProductHomeDto;
 import org.example.food.dtos.testimonialdto.TestimonialHomeDto;
@@ -34,6 +36,9 @@ public class HomeController {
     @Autowired
     private TestimonialService testimonialService;
 
+    @Autowired
+    private EventService eventService;
+
     @GetMapping("/")
     public String home(Model model){
         List<HeroHomeDto> homeHero = heroService.getHomeHero();
@@ -42,12 +47,16 @@ public class HomeController {
         List<CategoryHomeDto> homeCategories = categoryService.getHomeCategories();
         List<ProductHomeDto> homeProducts = productService.getHomeProducts();
         List<TestimonialHomeDto> homeTestimonials = testimonialService.getHomeTestimonials();
+        List<EventHomeDto> homeEvents = eventService.getHomeEvents();
+        List<EventHomeDto> events = eventService.getHomeEvents();
+        System.out.println("HOME EVENTS SIZE: " + events.size());
         model.addAttribute("hero", homeHero);
         model.addAttribute("about", homeAbout);
         model.addAttribute("cards", homeCards);
         model.addAttribute("categories", homeCategories);
         model.addAttribute("products", homeProducts);
         model.addAttribute("testimonials", homeTestimonials);
+        model.addAttribute("events", homeEvents);
         return "home";
     }
 }
