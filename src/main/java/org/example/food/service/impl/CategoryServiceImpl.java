@@ -4,6 +4,7 @@ import org.example.food.dtos.categorydtos.CategoryCreateDto;
 import org.example.food.dtos.categorydtos.CategoryDto;
 import org.example.food.dtos.categorydtos.CategoryHomeDto;
 import org.example.food.dtos.categorydtos.CategoryUpdateDto;
+import org.example.food.mapper.CategoryMapper;
 import org.example.food.model.Category;
 import org.example.food.repository.CategoryRepository;
 import org.example.food.service.CategoryService;
@@ -20,32 +21,33 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryRepository categoryRepository;
 
     @Autowired
-    private ModelMapper modelMapper;
+    private CategoryMapper categoryMapper;
 
     @Override
     public void createCategory(CategoryCreateDto categoryCreateDto) {
-        Category category = modelMapper.map(categoryCreateDto, Category.class);
+        Category category = categoryMapper.toEntity(categoryCreateDto);
         categoryRepository.save(category);
     }
 
     @Override
     public List<CategoryDto> getCategories() {
-        List<CategoryDto> categories = categoryRepository.findAll().stream().map(category -> modelMapper.map(category,CategoryDto.class)).collect(Collectors.toList());
+        List<CategoryDto> categories = categoryRepository.findAll().stream()
+                .map(categoryMapper::toDto)
+                .collect(Collectors.toList());
         return categories;
     }
 
     @Override
     public void updateCategory(CategoryUpdateDto categoryUpdateDto) {
-    Category findCategory = categoryRepository.findById(categoryUpdateDto.getId()).orElseThrow();
-    findCategory.setName(categoryUpdateDto.getName());
-    categoryRepository.save(findCategory);
+        Category findCategory = categoryRepository.findById(categoryUpdateDto.getId()).orElseThrow();
+        categoryMapper.updateEntityFromDto(categoryUpdateDto, findCategory);
+        categoryRepository.save(findCategory);
     }
 
     @Override
     public CategoryUpdateDto findUpdatedCategory(Long id) {
         Category category = categoryRepository.findById(id).orElseThrow();
-        CategoryUpdateDto categoryUpdateDto = modelMapper.map(category, CategoryUpdateDto.class);
-        return categoryUpdateDto;
+        return categoryMapper.toUpdateDto(category);
     }
 
     @Override
@@ -56,7 +58,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryHomeDto> getHomeCategories() {
-        List<CategoryHomeDto> categories = categoryRepository.findAll().stream().map(category -> modelMapper.map(category, CategoryHomeDto.class)).collect(Collectors.toList());
+        List<CategoryHomeDto> categories = categoryRepository.findAll().stream()
+                .map(categoryMapper::toHomeDto)
+                .collect(Collectors.toList());
         return categories;
     }
 }

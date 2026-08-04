@@ -5,6 +5,7 @@ import org.example.food.dtos.productdtos.ProductCreateDto;
 import org.example.food.dtos.productdtos.ProductDto;
 import org.example.food.dtos.productdtos.ProductHomeDto;
 import org.example.food.dtos.productdtos.ProductUpdateDto;
+import org.example.food.mapper.ProductMapper;
 import org.example.food.model.Category;
 import org.example.food.model.Product;
 import org.example.food.repository.CategoryRepository;
@@ -39,23 +40,22 @@ public class ProductServiceImpl implements ProductService {
     private CategoryRepository categoryRepository;
 
     @Autowired
-    private ModelMapper modelMapper;
+    private ProductMapper productMapper;
 
 
     @Override
     public void addProduct(ProductCreateDto productCreateDto) {
-        Product product = modelMapper.map(productCreateDto,Product.class);
-        product.setId(null);
+        Product product = productMapper.toEntity(productCreateDto);
         Category category = categoryRepository.findById(productCreateDto.getCategoryId()).get();
 
         product.setCategory(category);
         MultipartFile file = productCreateDto.getPhotoFile();
-        if(file != null && !file.isEmpty()){
+        if (file != null && !file.isEmpty()) {
             try {
-                if(product.getPhotoUrl() != null){
+                if (product.getPhotoUrl() != null) {
                     String oldFileName = product.getPhotoUrl();
 
-                    Path oldFilePath = Paths.get(UPLOAD_DIR+oldFileName);
+                    Path oldFilePath = Paths.get(UPLOAD_DIR + oldFileName);
                     Files.deleteIfExists(oldFilePath);
 
                     Path oldStaticPath = Paths.get(STATIC_UPLOAD_DIR + oldFileName);
@@ -64,7 +64,7 @@ public class ProductServiceImpl implements ProductService {
 
                 String originalFileName = file.getOriginalFilename();
                 String fileExtension = originalFileName.substring(originalFileName.lastIndexOf('.'));
-                String uniqueFileName = UUID.randomUUID().toString()+fileExtension;
+                String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
 
                 File uploadDir = new File(UPLOAD_DIR);
                 if (!uploadDir.exists()) uploadDir.mkdirs();
@@ -77,12 +77,11 @@ public class ProductServiceImpl implements ProductService {
                 Files.copy(filePath, staticFilePath, StandardCopyOption.REPLACE_EXISTING);
 
                 product.setPhotoUrl(uniqueFileName);
-            }catch (IOException e){
+            } catch (IOException e) {
                 System.err.println("Photo upload failed: " + e.getMessage());
                 return;
             }
-        }
-        else {
+        } else {
             System.err.println("Photo file cannot be empty!");
             return;
         }
@@ -95,7 +94,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> getProducts() {
-        List<ProductDto> products = productRepository.findAll().stream().map(product -> modelMapper.map(product,ProductDto.class)).collect(Collectors.toList());
+        List<ProductDto> products = productRepository.findAll().stream()
+                .map(productMapper::toDto)
+                .collect(Collectors.toList());
         return products;
     }
 
@@ -108,7 +109,6 @@ public class ProductServiceImpl implements ProductService {
 
             String fileName = photoUrl.substring(photoUrl.lastIndexOf("/") + 1);
 
-            // 2. UPLOAD_DIR yolundan sil
             File imageFile = new File(UPLOAD_DIR + fileName);
             if (imageFile.exists()) {
                 if (imageFile.delete()) {
@@ -118,7 +118,6 @@ public class ProductServiceImpl implements ProductService {
                 }
             }
 
-            // 3. STATIC_UPLOAD_DIR yolundan sil
             File staticImageFile = new File(STATIC_UPLOAD_DIR + fileName);
             if (staticImageFile.exists()) {
                 if (staticImageFile.delete()) {
@@ -143,7 +142,6 @@ public class ProductServiceImpl implements ProductService {
         MultipartFile file = productUpdateDto.getPhotoFile();
         if (file != null && !file.isEmpty()) {
             try {
-                // Köhnə şəkli sil
                 String oldFileName = findProduct.getPhotoUrl();
                 if (oldFileName != null && !oldFileName.isEmpty()) {
                     Path oldUploadPath = Paths.get(UPLOAD_DIR + oldFileName);
@@ -153,7 +151,6 @@ public class ProductServiceImpl implements ProductService {
                     Files.deleteIfExists(oldStaticPath);
                 }
 
-                // Yeni şəkli yüklə
                 String originalFileName = file.getOriginalFilename();
                 String fileExtension = originalFileName.substring(originalFileName.lastIndexOf('.'));
                 String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
@@ -168,7 +165,6 @@ public class ProductServiceImpl implements ProductService {
                 Path staticFilePath = Paths.get(STATIC_UPLOAD_DIR + uniqueFileName);
                 Files.copy(filePath, staticFilePath, StandardCopyOption.REPLACE_EXISTING);
 
-                // Yalnız yeni şəkil varsa, photoUrl yenilə
                 findProduct.setPhotoUrl(uniqueFileName);
 
             } catch (IOException e) {
@@ -176,13 +172,10 @@ public class ProductServiceImpl implements ProductService {
                 return;
             }
         }
-// Əks halda photoUrl olduğu kimi saxlanacaq
+        // Əks halda photoUrl olduğu kimi saxlanacaq
 
-
-        findProduct.setId(productUpdateDto.getId());
-        findProduct.setName(productUpdateDto.getName());
-        findProduct.setIngredient(productUpdateDto.getIngredient());
-        findProduct.setPrice(Long.valueOf(productUpdateDto.getPrice()));
+        // name/ingredient/price-i mapper ilə yeniləyirik; photoUrl, category, tarixlər mapperdə ignore olunub
+        productMapper.updateEntityFromDto(productUpdateDto, findProduct);
         findProduct.setCategory(category);
         findProduct.setUpdatedDate(new Date());
         productRepository.saveAndFlush(findProduct);
@@ -191,13 +184,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductUpdateDto findUpdatedProduct(Long id) {
         Product product = productRepository.findById(id).orElseThrow();
-        ProductUpdateDto productUpdateDto = modelMapper.map(product, ProductUpdateDto.class);
-        return productUpdateDto;
+        return productMapper.toUpdateDto(product);
     }
 
     @Override
     public List<ProductHomeDto> getHomeProducts() {
-        List<ProductHomeDto> productHomeDtos = productRepository.findAll().stream().map(product -> modelMapper.map(product, ProductHomeDto.class)).collect(Collectors.toList());
+        List<ProductHomeDto> productHomeDtos = productRepository.findAll().stream()
+                .map(productMapper::toHomeDto)
+                .collect(Collectors.toList());
         return productHomeDtos;
     }
 

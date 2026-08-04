@@ -1,15 +1,13 @@
 package org.example.food.service.impl;
 
-import jdk.jfr.Category;
 import org.example.food.dtos.herodtos.HeroCreateDto;
 import org.example.food.dtos.herodtos.HeroDto;
 import org.example.food.dtos.herodtos.HeroHomeDto;
 import org.example.food.dtos.herodtos.HeroUpdateDto;
+import org.example.food.mapper.HeroMapper;
 import org.example.food.model.Hero;
-import org.example.food.payloads.APIResponse;
 import org.example.food.repository.HeroRepository;
 import org.example.food.service.HeroService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,7 +22,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static org.codehaus.groovy.runtime.DefaultGroovyMethods.collect;
 
 @Service
 public class HeroServiceImpl implements HeroService {
@@ -35,12 +32,11 @@ public class HeroServiceImpl implements HeroService {
     private HeroRepository heroRepository;
 
     @Autowired
-    private ModelMapper modelMapper;
-
+    private HeroMapper heroMapper;
 
     @Override
     public void createHero(HeroCreateDto heroCreateDto) {
-        Hero hero = modelMapper.map(heroCreateDto, Hero.class);
+        Hero hero = heroMapper.toEntity(heroCreateDto);
         MultipartFile file = heroCreateDto.getPhotoFile();
 
         if (file != null && !file.isEmpty()) {
@@ -48,27 +44,22 @@ public class HeroServiceImpl implements HeroService {
                 if (hero.getPhotoUrl() != null) {
                     String oldFileName = hero.getPhotoUrl();
 
-                    // Hem project root/uploads içinden sil
                     Path oldFilePath = Paths.get(UPLOAD_DIR + oldFileName);
                     Files.deleteIfExists(oldFilePath);
 
-                    // Hem static/uploads içinden sil
                     Path oldStaticPath = Paths.get(STATIC_UPLOAD_DIR + oldFileName);
                     Files.deleteIfExists(oldStaticPath);
                 }
 
-                // 2. Yeni file yaratmaq
                 String originalFileName = file.getOriginalFilename();
                 String fileExtension = originalFileName.substring(originalFileName.lastIndexOf('.'));
                 String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
 
-                // uploads/ folderine yaz
                 File uploadDir = new File(UPLOAD_DIR);
                 if (!uploadDir.exists()) uploadDir.mkdirs();
                 Path filePath = Paths.get(UPLOAD_DIR + uniqueFileName);
                 Files.write(filePath, file.getBytes());
 
-                // static/uploads/ folderine kopyala
                 File staticUploadDir = new File(STATIC_UPLOAD_DIR);
                 if (!staticUploadDir.exists()) staticUploadDir.mkdirs();
                 Path staticFilePath = Paths.get(STATIC_UPLOAD_DIR + uniqueFileName);
@@ -89,7 +80,8 @@ public class HeroServiceImpl implements HeroService {
 
     @Override
     public List<HeroDto> getHero() {
-        List<HeroDto> result = heroRepository.findAll().stream().map(hero -> modelMapper.map(hero, HeroDto.class))
+        List<HeroDto> result = heroRepository.findAll().stream()
+                .map(heroMapper::toDto)
                 .collect(Collectors.toList());
         return result;
     }
@@ -101,7 +93,6 @@ public class HeroServiceImpl implements HeroService {
 
         if (file != null && !file.isEmpty()) {
             try {
-                // Əvvəlki şəkilləri silmək
                 String oldFileName = findHero.getPhotoUrl();
                 if (oldFileName != null && !oldFileName.isEmpty()) {
                     Path oldFilePath = Paths.get(UPLOAD_DIR + oldFileName);
@@ -111,18 +102,15 @@ public class HeroServiceImpl implements HeroService {
                     Files.deleteIfExists(oldStaticPath);
                 }
 
-                // Yeni faylın adınının təyin olunması
                 String originalFileName = file.getOriginalFilename();
                 String fileExtension = originalFileName.substring(originalFileName.lastIndexOf('.'));
                 String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
 
-                // uploads/ folderinə yaz
                 File uploadDir = new File(UPLOAD_DIR);
                 if (!uploadDir.exists()) uploadDir.mkdirs();
                 Path filePath = Paths.get(UPLOAD_DIR + uniqueFileName);
                 Files.write(filePath, file.getBytes());
 
-                // static/uploads/ folderinə kopyala
                 File staticUploadDir = new File(STATIC_UPLOAD_DIR);
                 if (!staticUploadDir.exists()) staticUploadDir.mkdirs();
                 Path staticFilePath = Paths.get(STATIC_UPLOAD_DIR + uniqueFileName);
@@ -135,9 +123,8 @@ public class HeroServiceImpl implements HeroService {
             }
         }
 
-        findHero.setTitle(heroDto.getTitle());
-        findHero.setSubTitle(heroDto.getSubTitle());
-        findHero.setVideoUrl(heroDto.getVideoUrl());
+        // title/subTitle/videoUrl-u mapper ilə yeniləyirik; photoUrl mapperdə ignore olunub
+        heroMapper.updateEntityFromDto(heroDto, findHero);
 
         heroRepository.saveAndFlush(findHero);
     }
@@ -146,14 +133,13 @@ public class HeroServiceImpl implements HeroService {
     @Override
     public HeroUpdateDto findUpdateHero(Long id) {
         Hero hero = heroRepository.findById(id).orElseThrow();
-        HeroUpdateDto heroUpdateDto = modelMapper.map(hero, HeroUpdateDto.class);
-        return heroUpdateDto;
+        return heroMapper.toUpdateDto(hero);
     }
 
     @Override
     public List<HeroHomeDto> getHomeHero() {
-        List<HeroHomeDto>heroDto = heroRepository.findAll().stream()
-                .map(article -> modelMapper.map(article, HeroHomeDto.class))
+        List<HeroHomeDto> heroDto = heroRepository.findAll().stream()
+                .map(heroMapper::toHomeDto)
                 .collect(Collectors.toList());
         return heroDto;
     }

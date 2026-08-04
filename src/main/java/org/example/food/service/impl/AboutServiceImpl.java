@@ -4,6 +4,7 @@ import org.example.food.dtos.aboutdtos.AboutCreateDto;
 import org.example.food.dtos.aboutdtos.AboutDto;
 import org.example.food.dtos.aboutdtos.AboutHomeDto;
 import org.example.food.dtos.aboutdtos.AboutUpdateDto;
+import org.example.food.mapper.AboutMapper;
 import org.example.food.model.About;
 import org.example.food.repository.AboutRepository;
 import org.example.food.service.AboutService;
@@ -31,19 +32,19 @@ public class AboutServiceImpl implements AboutService {
     private AboutRepository aboutRepository;
 
     @Autowired
-    private ModelMapper modelMapper;
+    private AboutMapper aboutMapper;
 
     @Override
     public void createAbout(AboutCreateDto aboutCreateDto) {
-        About about = modelMapper.map(aboutCreateDto, About.class);
+        About about = aboutMapper.toEntity(aboutCreateDto);
         MultipartFile file = aboutCreateDto.getPhotoFile();
 
-        if(file != null && !file.isEmpty()){
+        if (file != null && !file.isEmpty()) {
             try {
-                if(about.getPhotoUrl() != null){
+                if (about.getPhotoUrl() != null) {
                     String oldFileName = about.getPhotoUrl();
 
-                    Path oldFilePath = Paths.get(UPLOAD_DIR+oldFileName);
+                    Path oldFilePath = Paths.get(UPLOAD_DIR + oldFileName);
                     Files.deleteIfExists(oldFilePath);
 
                     Path oldStaticPath = Paths.get(STATIC_UPLOAD_DIR + oldFileName);
@@ -52,7 +53,7 @@ public class AboutServiceImpl implements AboutService {
 
                 String originalFileName = file.getOriginalFilename();
                 String fileExtension = originalFileName.substring(originalFileName.lastIndexOf('.'));
-                String uniqueFileName = UUID.randomUUID().toString()+fileExtension;
+                String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
 
                 File uploadDir = new File(UPLOAD_DIR);
                 if (!uploadDir.exists()) uploadDir.mkdirs();
@@ -65,12 +66,11 @@ public class AboutServiceImpl implements AboutService {
                 Files.copy(filePath, staticFilePath, StandardCopyOption.REPLACE_EXISTING);
 
                 about.setPhotoUrl(uniqueFileName);
-            }catch (IOException e){
+            } catch (IOException e) {
                 System.err.println("Photo upload failed: " + e.getMessage());
                 return;
             }
-        }
-        else {
+        } else {
             System.err.println("Photo file cannot be empty!");
             return;
         }
@@ -80,10 +80,12 @@ public class AboutServiceImpl implements AboutService {
 
     @Override
     public List<AboutDto> getAbout() {
-        List<AboutDto> result = aboutRepository.findAll().stream().map(about->modelMapper.map(about,AboutDto.class))
+        List<AboutDto> result = aboutRepository.findAll().stream()
+                .map(aboutMapper::toDto)
                 .collect(Collectors.toList());
         return result;
     }
+
 
     @Override
     public void updatedAbout(AboutUpdateDto aboutDto) {
@@ -122,25 +124,22 @@ public class AboutServiceImpl implements AboutService {
             }
         }
 
-        findAbout.setTitle(aboutDto.getTitle());
-        findAbout.setDescription(aboutDto.getDescription());
-        findAbout.setVideoUrl(aboutDto.getVideoUrl());
+        // title/description/videoUrl-u mapper ilə yeniləyirik; photoUrl mapperdə ignore olunub
+        aboutMapper.updateEntityFromDto(aboutDto, findAbout);
 
         aboutRepository.saveAndFlush(findAbout);
-
     }
 
     @Override
     public AboutUpdateDto findUpdatedAbout(Long id) {
         About about = aboutRepository.findById(id).orElseThrow();
-        AboutUpdateDto aboutUpdateDto = modelMapper.map(about, AboutUpdateDto.class);
-        return aboutUpdateDto;
+        return aboutMapper.toUpdateDto(about);
     }
 
     @Override
     public List<AboutHomeDto> getHomeAbout() {
         List<AboutHomeDto> aboutDto = aboutRepository.findAll().stream()
-                .map(about -> modelMapper.map(about, AboutHomeDto.class))
+                .map(aboutMapper::toHomeDto)
                 .collect(Collectors.toList());
         return aboutDto;
     }
