@@ -1,0 +1,40 @@
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/dashboard/layout}" lang="en">
+<head>
+    <title>Create Chef</title>
+</head>
+<div layout:fragment="container" class="container-fluid">
+    <h1>SALAM</h1>
+    <div>
+        <form action="/admin/chef/create" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <input class="form-control" type="text" placeholder="Full Name" name="fullName" />
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" placeholder="Position" name="position" />
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" placeholder="Description" name="description" />
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="file" placeholder="photoUrl" name="photoFile" />
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" placeholder="x link" name="xLink" />
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" placeholder="Facebook link" name="facebookLink" />
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" placeholder="Instagram link" name="instagramLink" />
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" placeholder="Linkedin Link" name="linkedinLink" />
+            </div>
+            <input type="submit" value="Create" class="btn btn-success" />
+        </form>
+    </div>
+</div>
+</html>

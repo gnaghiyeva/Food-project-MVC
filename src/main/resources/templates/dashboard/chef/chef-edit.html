@@ -1,0 +1,43 @@
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/dashboard/layout}" lang="en">
+<head>
+    <title>Update Chef</title>
+</head>
+<div layout:fragment="container" class="container-fluid">
+    <h1>Yeniləmə</h1>
+    <div>
+        <form action="/admin/chef/update" method="post" enctype="multipart/form-data">
+            <input type="hidden" th:value="${chef.id}" name="id" />
+
+            <div class="form-group">
+                <input th:value="${chef.fullName}"  class="form-control" type="text" placeholder="FullName" name="fullName" />
+            </div>
+            <div class="form-group">
+                <input th:value="${chef.position}"  class="form-control" type="text" placeholder="Position" name="position" />
+            </div>
+            <div class="form-group">
+                <input th:value="${chef.description}"  class="form-control" type="text" placeholder="Description" name="description" />
+            </div>
+            <div class="form-group">
+                <input th:value="${chef.xLink}"  class="form-control" type="text" placeholder="X Link" name="xLink" />
+            </div>
+            <div class="form-group">
+                <input th:value="${chef.facebookLink}"  class="form-control" type="text" placeholder="Facebook Link" name="facebookLink" />
+            </div>
+            <div class="form-group">
+                <input th:value="${chef.instagramLink}"  class="form-control" type="text" placeholder="İnstagram Link" name="instagramLink" />
+            </div>
+            <div class="form-group">
+                <input th:value="${chef.linkedinLink}"  class="form-control" type="text" placeholder="Linkedin Link" name="linkedinLink" />
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="file" placeholder="photoUrl" name="photoFile" />
+            </div>
+
+            <input type="submit" value="Update" class="btn btn-success" />
+        </form>
+    </div>
+</div>
+</html>
