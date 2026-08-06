@@ -1,0 +1,76 @@
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/dashboard/layout}" lang="en">
+<head>
+    <title>Gallery</title>
+</head>
+<div layout:fragment="container" class="container-fluid">
+    <a href="/admin/gallery/gallery-create" class="btn btn-primary btn-sm">Add</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Photo</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="gallery : ${galleries}">
+            <th scope="row" th:text="${gallery.id}"></th>
+            <td>
+                <img width="100" height="100" th:src="@{'/uploads/' + ${gallery.photoUrl}}" alt="photo"/>
+            </td>
+            <td>
+                <a th:href="'/admin/gallery/gallery-edit/'+${gallery.id}" class="btn btn-outline-warning" ><i class="fa-solid fa-pen-to-square"></i></a>
+            </td>
+            <td>
+                <button th:onclick="'remove('+${gallery.id}+')'" class="btn btn-outline-danger btn-sm">Delete</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<th:block layout:fragment="myScript">
+    <script>
+        function remove(id) {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: "btn btn-success",
+                    cancelButton: "btn btn-danger"
+                },
+                buttonsStyling: false
+            });
+            swalWithBootstrapButtons.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!",
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        icon: "success"
+                    });
+                    window.location="/admin/gallery/remove/"+id;
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Cancelled",
+                        text: "Your imaginary file is safe :)",
+                        icon: "error"
+                    });
+                }
+            });
+        }
+    </script>
+
+</th:block>
+</html>
