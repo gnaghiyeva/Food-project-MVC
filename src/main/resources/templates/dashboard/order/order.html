@@ -1,0 +1,105 @@
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/dashboard/layout}" lang="en">
+<head>
+    <title>Products</title>
+</head>
+<div layout:fragment="container" class="container-fluid">
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Surname</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Order date</th>
+            <th scope="col">Order Time</th>
+            <th scope="col">Number of People</th>
+            <th scope="col">Message</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody th:each="order : ${orders}">
+        <tr>
+            <th scope="row" th:text="${order.id}">3</th>
+            <td th:text="${order.name}"></td>
+            <td th:text="${order.surname}"></td>
+            <td th:text="${order.phone}"></td>
+            <td th:text="${order.orderDate}"></td>
+            <td th:text="${order.orderTime}"></td>
+            <td th:text="${order.people}"></td>
+            <td th:text="${order.message}"></td>
+
+            <td>
+                <select th:onchange="|location.href=this.value|"
+                        class="form-select form-select-sm"
+                        style="width:auto; display:inline-block;">
+                    <option th:value="@{/admin/order/status/{id}(id=${order.id}, status='PENDING')}"
+                            th:selected="${order.status == null or order.status.name() == 'PENDING'}">
+                        Pending
+                    </option>
+                    <option th:value="@{/admin/order/status/{id}(id=${order.id}, status='CONFIRMED')}"
+                            th:selected="${order.status != null and order.status.name() == 'CONFIRMED'}">
+                        Confirmed
+                    </option>
+                </select>
+            </td>
+
+            <td>
+                <a th:href="@{/admin/order/remove/{id}(id=${order.id})}"
+                   class="btn btn-sm btn-danger">
+                    Sil
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<th:block layout:fragment="myScript">
+    <script>
+        function remove(id) {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: "btn btn-success",
+                    cancelButton: "btn btn-danger"
+                },
+                buttonsStyling: false
+            });
+            swalWithBootstrapButtons.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!",
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        icon: "success"
+                    });
+                    window.location = "/admin/product/remove/" + id;
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Cancelled",
+                        text: "Your imaginary file is safe :)",
+                        icon: "error"
+                    });
+                }
+            });
+        }
+    </script>
+
+</th:block>
+
+</html>
