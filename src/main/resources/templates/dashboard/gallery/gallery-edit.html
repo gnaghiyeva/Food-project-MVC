@@ -1,0 +1,22 @@
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/dashboard/layout}" lang="en">
+<head>
+    <title>Update Photo</title>
+</head>
+<div layout:fragment="container" class="container-fluid">
+    <h1>SALAM</h1>
+    <div>
+        <form action="/admin/gallery/update" method="post" enctype="multipart/form-data">
+            <input type="hidden" th:value="${gallery.id}" name="id" />
+
+            <div class="form-group">
+                <input class="form-control" type="file" placeholder="photoUrl" name="photoFile" />
+            </div>
+
+            <input type="submit" value="Update" class="btn btn-success" />
+        </form>
+    </div>
+</div>
+</html>
