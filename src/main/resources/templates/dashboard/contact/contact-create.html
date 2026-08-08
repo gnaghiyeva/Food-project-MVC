@@ -1,0 +1,45 @@
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/dashboard/layout}" lang="en">
+<head>
+    <title>Category Create</title>
+</head>
+<div layout:fragment="container" class="container-fluid">
+    <h1>SALAM</h1>
+    <div>
+        <form action="/admin/contact/create" method="post">
+            <div class="form-group">
+                <input class="form-control" type="text" placeholder="Location" name="location" />
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" placeholder="Address" name="address" />
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" placeholder="Phone" name="phone" />
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" placeholder="Email" name="email" />
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" placeholder="Opening House" name="openingHour" />
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" placeholder="Twitter Link" name="xLink" />
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" placeholder="Facebook Link" name="facebookLink" />
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" placeholder="Instagram Link" name="instagramLink" />
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" placeholder="Linkedin Link" name="linkedinLink" />
+            </div>
+
+
+            <input type="submit" value="Create" class="btn btn-success" />
+        </form>
+    </div>
+</div>
+</html>

@@ -589,7 +589,7 @@
 </section><!-- /Gallery Section -->
 
 <!-- Contact Section -->
-<section id="contact" class="contact section">
+<section id="contact" class="contact section" th:each="contact:${contact}">
 
     <!-- Section Title -->
     <div class="container section-title" data-aos="fade-up">
@@ -601,7 +601,7 @@
 
         <div class="mb-5">
             <iframe style="width: 100%; height: 400px;"
-                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12097.433213460943!2d-74.0062269!3d40.7101282!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb89d1fe6bc499443!2sDowntown+Conference+Center!5e0!3m2!1smk!2sbg!4v1539943755621"
+                    th:src="${contact.address}"
                     frameborder="0" allowfullscreen=""></iframe>
         </div><!-- End Google Maps -->
 
@@ -612,7 +612,7 @@
                     <i class="icon bi bi-geo-alt flex-shrink-0"></i>
                     <div>
                         <h3>Address</h3>
-                        <p>A108 Adam Street, New York, NY 535022</p>
+                        <p th:utext="${contact.address}">A108 Adam Street, New York, NY 535022</p>
                     </div>
                 </div>
             </div><!-- End Info Item -->
@@ -622,7 +622,7 @@
                     <i class="icon bi bi-telephone flex-shrink-0"></i>
                     <div>
                         <h3>Call Us</h3>
-                        <p>+1 5589 55488 55</p>
+                        <p th:utext="${contact.phone}">+1 5589 55488 55</p>
                     </div>
                 </div>
             </div><!-- End Info Item -->
@@ -632,7 +632,7 @@
                     <i class="icon bi bi-envelope flex-shrink-0"></i>
                     <div>
                         <h3>Email Us</h3>
-                        <p>info@example.com</p>
+                        <p th:utext="${contact.email}">info@example.com</p>
                     </div>
                 </div>
             </div><!-- End Info Item -->
@@ -642,14 +642,14 @@
                     <i class="icon bi bi-clock flex-shrink-0"></i>
                     <div>
                         <h3>Opening Hours<br></h3>
-                        <p><strong>Mon-Sat:</strong> 11AM - 23PM; <strong>Sunday:</strong> Closed</p>
+                        <p th:utext="${contact.openingHour}">Opening</p>
                     </div>
                 </div>
             </div><!-- End Info Item -->
 
         </div>
 
-        <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="600">
+        <form th:action="@{/contact-form/create}" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="600" onsubmit="showFormAlert()">
             <div class="row gy-4">
 
                 <div class="col-md-6">
@@ -665,7 +665,7 @@
                 </div>
 
                 <div class="col-md-12">
-                    <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
+                    <textarea class="form-control" name="thoughts" rows="6" placeholder="Message" required=""></textarea>
                 </div>
 
                 <div class="col-md-12 text-center">
@@ -691,8 +691,17 @@
     function showBookingAlert() {
         Swal.fire({
             icon: 'success',
-            title: 'Uğurlu!',
+            title: 'Success!',
             text: 'Your reservation has been sent.',
+            confirmButtonText: 'Close'
+        });
+    }
+
+    function showFormAlert() {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'Your thoughts has been sent.',
             confirmButtonText: 'Close'
         });
     }
