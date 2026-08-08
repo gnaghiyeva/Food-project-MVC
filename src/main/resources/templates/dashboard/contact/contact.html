@@ -1,0 +1,57 @@
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/dashboard/layout}" lang="en">
+<head>
+    <title>About</title>
+</head>
+<div layout:fragment="container" class="container-fluid">
+    <a href="/admin/contact/contact-create" class="btn btn-primary btn-sm">Adding data</a>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Location</th>
+                <th>Address</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Opening Hours</th>
+                <th>Twitter Link</th>
+                <th>Facebook Link</th>
+                <th>Instagram Link</th>
+                <th>LinkedIn Link</th>
+                <th>Edit</th>
+            </tr>
+            </thead>
+            <tbody th:each="contact : ${contact}">
+            <tr>
+                <td th:text="${contact.id}"></td>
+
+                <td class="text-truncate" style="max-width:250px;"
+                    th:title="${contact.location}"
+                    th:text="${contact.location}">
+                </td>
+
+                <td th:text="${contact.address}"></td>
+                <td th:text="${contact.phone}"></td>
+                <td th:text="${contact.email}"></td>
+                <td th:text="${contact.openingHour}"></td>
+                <td th:text="${contact.xLink}"></td>
+                <td th:text="${contact.facebookLink}"></td>
+                <td th:text="${contact.instagramLink}"></td>
+                <td th:text="${contact.linkedinLink}"></td>
+
+                <td>
+                    <a th:href="@{/admin/contact/contact-edit/{id}(id=${contact.id})}"
+                       class="btn btn-outline-warning">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</html>
