@@ -18,7 +18,7 @@
                 <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
                     <a href="#book-a-table" class="btn-get-started">Book a Table</a>
                     <a th:href="${hero.videoUrl}" class="glightbox btn-watch-video d-flex align-items-center"><i
-                            class="bi bi-play-circle"></i><span>Watch Video</span></a>
+                            class="bi bi-play-circle"></i><span>Watch Our Story</span></a>
                 </div>
             </div>
             <div class="col-lg-5 order-1 order-lg-2 hero-img" data-aos="zoom-out">
@@ -44,8 +44,7 @@
             <div class="col-lg-7" data-aos="fade-up" data-aos-delay="100">
                 <img th:src="@{'/uploads/' + ${about.photoUrl}}" class="img-fluid mb-4" alt="">
                 <div class="book-a-table">
-                    <h3>Book a Table</h3>
-                    <p>+1 5589 55488 55</p>
+
                 </div>
             </div>
             <div class="col-lg-5" data-aos="fade-up" data-aos-delay="250">
@@ -227,7 +226,7 @@
                         <p th:text="${product.ingredient}" class="ingredients">
                             Lorem, deren, trataro, filede, nerada
                         </p>
-                        <p th:text="${product.price}" class="price">
+                        <p th:text="${product.price} + AZN" class="price">
                             $5.95
                         </p>
                     </div>
@@ -601,7 +600,7 @@
 
         <div class="mb-5">
             <iframe style="width: 100%; height: 400px;"
-                    th:src="${contact.address}"
+                    th:src="${contact.location}"
                     frameborder="0" allowfullscreen=""></iframe>
         </div><!-- End Google Maps -->
 
