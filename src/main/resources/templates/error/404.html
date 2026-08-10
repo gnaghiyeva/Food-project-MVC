@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="az"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>404 - Səhifə tapılmadı</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f9fc;
+
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 20px;
+        }
+
+        .error-container {
+            width: 100%;
+            max-width: 600px;
+
+            background: white;
+
+            padding: 60px 40px;
+
+            border-radius: 18px;
+
+            text-align: center;
+
+            box-shadow:
+                    0 10px 35px rgba(0, 0, 0, 0.08);
+        }
+
+        .error-code {
+            font-size: 110px;
+            font-weight: 800;
+            line-height: 1;
+
+            color: #4e73df;
+        }
+
+        h1 {
+            margin-top: 20px;
+
+            font-size: 30px;
+
+            color: #333;
+        }
+
+        p {
+            margin-top: 15px;
+
+            color: #777;
+
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .buttons {
+            margin-top: 35px;
+
+            display: flex;
+            justify-content: center;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 25px;
+
+            border-radius: 8px;
+
+            text-decoration: none;
+
+            font-weight: 600;
+
+            transition: 0.3s;
+        }
+
+        .btn-primary {
+            background: #4e73df;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2e59d9;
+        }
+
+        .btn-secondary {
+            background: #eaecf4;
+            color: #444;
+        }
+
+        .btn-secondary:hover {
+            background: #dfe1e8;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="error-container">
+
+    <div class="error-code">
+        404
+    </div>
+
+    <h1>Səhifə tapılmadı</h1>
+
+    <p>
+        Axtardığınız səhifə mövcud deyil,
+        silinmiş ola bilər və ya ünvan səhv yazılıb.
+    </p>
+
+    <div class="buttons">
+
+        <a th:href="@{/}"
+           class="btn btn-primary">
+
+            Ana səhifəyə qayıt
+
+        </a>
+
+        <a href="javascript:history.back()"
+           class="btn btn-secondary">
+
+            Geri qayıt
+
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>
