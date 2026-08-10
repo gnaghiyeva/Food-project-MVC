@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Admin Girişi</title>
+    <link th:href="@{/admin/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
+    <link th:href="@{/admin/css/sb-admin-2.min.css}" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        .login-card {
+            max-width: 420px;
+            width: 100%;
+            margin: 0 auto;
+            border-radius: 1rem;
+            box-shadow: 0 .5rem 2rem rgba(0,0,0,.2);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card login-card o-hidden border-0 shadow-lg">
+        <div class="card-body p-5">
+            <div class="text-center mb-4">
+                <h1 class="h4 text-gray-900 mb-1">Admin Panelinə Giriş</h1>
+                <p class="text-muted small">Davam etmək üçün istifadəçi adı və parolu daxil edin</p>
+            </div>
+
+            <div th:if="${param.error}" class="alert alert-danger">
+                İstifadəçi adı və ya parol yanlışdır.
+            </div>
+            <div th:if="${param.logout}" class="alert alert-success">
+                Sistemdən uğurla çıxdınız.
+            </div>
+
+            <form th:action="@{/login}" method="post">
+                <div class="form-group">
+                    <label>İstifadəçi adı</label>
+                    <input type="text" name="username" class="form-control form-control-user" placeholder="İstifadəçi adı" required autofocus>
+                </div>
+                <div class="form-group">
+                    <label>Parol</label>
+                    <input type="password" name="password" class="form-control form-control-user" placeholder="Parol" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-user btn-block">Daxil ol</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
