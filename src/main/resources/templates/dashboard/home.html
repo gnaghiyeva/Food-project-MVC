@@ -1,12 +1,293 @@
 <html
         xmlns:th="http://thymeleaf.org"
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorate="~{/dashboard/layout}" lang="en">
+        layout:decorate="~{/dashboard/layout}"
+        lang="en">
+
 <head>
     <title>Dashboard</title>
 </head>
+
 <div layout:fragment="container" class="container-fluid">
-<h1>SALAM</h1>
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+
+        <div>
+            <h1 class="h3 mb-1 text-gray-800">
+                Dashboard
+            </h1>
+
+            <p class="mb-0 text-gray-600">
+                Sistemin ümumi statistik göstəriciləri
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- Statistik kartlar -->
+    <div class="row">
+
+        <!-- Products -->
+        <div class="col-xl-4 col-md-6 mb-4">
+
+            <div class="card border-left-primary shadow h-100 py-2">
+
+                <div class="card-body">
+
+                    <div class="row no-gutters align-items-center">
+
+                        <div class="col mr-2">
+
+                            <div class="text-xs font-weight-bold
+                                        text-primary text-uppercase mb-1">
+
+                                Məhsullar
+
+                            </div>
+
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"
+                                 th:text="${productCount}">
+
+                                0
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-auto">
+
+                            <i class="fas fa-utensils fa-2x text-gray-300"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Orders -->
+        <div class="col-xl-4 col-md-6 mb-4">
+
+            <div class="card border-left-success shadow h-100 py-2">
+
+                <div class="card-body">
+
+                    <div class="row no-gutters align-items-center">
+
+                        <div class="col mr-2">
+
+                            <div class="text-xs font-weight-bold
+                                        text-success text-uppercase mb-1">
+
+                                Sifarişlər
+
+                            </div>
+
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"
+                                 th:text="${orderCount}">
+
+                                0
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-auto">
+
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Chefs -->
+        <div class="col-xl-4 col-md-6 mb-4">
+
+            <div class="card border-left-info shadow h-100 py-2">
+
+                <div class="card-body">
+
+                    <div class="row no-gutters align-items-center">
+
+                        <div class="col mr-2">
+
+                            <div class="text-xs font-weight-bold
+                                        text-info text-uppercase mb-1">
+
+                                Aşpazlar
+
+                            </div>
+
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"
+                                 th:text="${chefCount}">
+
+                                0
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-auto">
+
+                            <i class="fas fa-user-tie fa-2x text-gray-300"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Events -->
+        <div class="col-xl-4 col-md-6 mb-4">
+
+            <div class="card border-left-warning shadow h-100 py-2">
+
+                <div class="card-body">
+
+                    <div class="row no-gutters align-items-center">
+
+                        <div class="col mr-2">
+
+                            <div class="text-xs font-weight-bold
+                                        text-warning text-uppercase mb-1">
+
+                                Eventlər
+
+                            </div>
+
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"
+                                 th:text="${eventCount}">
+
+                                0
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-auto">
+
+                            <i class="fas fa-calendar-alt fa-2x text-gray-300"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Messages -->
+        <div class="col-xl-4 col-md-6 mb-4">
+
+            <div class="card border-left-danger shadow h-100 py-2">
+
+                <div class="card-body">
+
+                    <div class="row no-gutters align-items-center">
+
+                        <div class="col mr-2">
+
+                            <div class="text-xs font-weight-bold
+                                        text-danger text-uppercase mb-1">
+
+                                Mesajlar
+
+                            </div>
+
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"
+                                 th:text="${messageCount}">
+
+                                0
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-auto">
+
+                            <i class="fas fa-envelope fa-2x text-gray-300"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Admins -->
+        <div class="col-xl-4 col-md-6 mb-4">
+
+            <div class="card border-left-secondary shadow h-100 py-2">
+
+                <div class="card-body">
+
+                    <div class="row no-gutters align-items-center">
+
+                        <div class="col mr-2">
+
+                            <div class="text-xs font-weight-bold
+                                        text-secondary text-uppercase mb-1">
+
+                                Adminlər
+
+                            </div>
+
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"
+                                 th:text="${adminCount}">
+
+                                0
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-auto">
+
+                            <i class="fas fa-users-cog fa-2x text-gray-300"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
+
 </html>
