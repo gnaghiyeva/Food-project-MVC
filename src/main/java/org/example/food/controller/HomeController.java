@@ -9,6 +9,7 @@ import org.example.food.dtos.eventdtos.EventHomeDto;
 import org.example.food.dtos.gallerydtos.GalleryHomeDto;
 import org.example.food.dtos.herodtos.HeroHomeDto;
 import org.example.food.dtos.productdtos.ProductHomeDto;
+import org.example.food.dtos.statistics.StatisticsHomeDto;
 import org.example.food.dtos.testimonialdto.TestimonialHomeDto;
 import org.example.food.dtos.whyusdtos.WhyUsHomeDto;
 import org.example.food.service.*;
@@ -51,6 +52,9 @@ public class HomeController {
     @Autowired
     private ContactService contactService;
 
+    @Autowired
+    private StatisticsService statisticsService;
+
     @GetMapping("/")
     public String home(Model model){
         List<HeroHomeDto> homeHero = heroService.getHomeHero();
@@ -64,7 +68,7 @@ public class HomeController {
         List<ChefHomeDto> homeChefs = chefService.getHomeChefs();
         List<GalleryHomeDto> homeGalleries = galleryService.getHomeGallery();
         List<ContactHomeDto> homeContact = contactService.getHomeContact();
-        System.out.println("HOME EVENTS SIZE: " + events.size());
+        List<StatisticsHomeDto> homeStatistics = statisticsService.getHomeStatistics();
         model.addAttribute("hero", homeHero);
         model.addAttribute("about", homeAbout);
         model.addAttribute("cards", homeCards);
@@ -75,6 +79,7 @@ public class HomeController {
         model.addAttribute("chefs",homeChefs);
         model.addAttribute("galleries", homeGalleries);
         model.addAttribute("contact", homeContact);
+        model.addAttribute("statistics", homeStatistics);
         return "home";
     }
 }
