@@ -4,7 +4,7 @@
 
     <meta charset="UTF-8">
 
-    <title>Adminlər</title>
+    <title>Admins</title>
 
     <link th:href="@{/admin/css/sb-admin-2.min.css}"
           rel="stylesheet">
@@ -17,12 +17,12 @@
 
     <div class="d-flex justify-content-between mb-3">
 
-        <h3>İstifadəçilər</h3>
+        <h3>Admins</h3>
 
         <a th:href="@{/admin/users/create}"
            class="btn btn-primary">
 
-            Yeni istifadəçi
+            New User
 
         </a>
 
@@ -39,7 +39,7 @@
 
                 <tr>
                     <th>ID</th>
-                    <th>Ad Soyad</th>
+                    <th>Name Surname</th>
                     <th>Username</th>
                     <th>Role</th>
                     <th>Status</th>
@@ -87,7 +87,7 @@
                                 th:href="@{/admin/users/delete/{id}(id=${admin.id})}"
                                 class="btn btn-danger btn-sm">
 
-                            Sil
+                            Delete
 
                         </a>
 
