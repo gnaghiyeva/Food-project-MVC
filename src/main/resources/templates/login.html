@@ -29,27 +29,27 @@
     <div class="card login-card o-hidden border-0 shadow-lg">
         <div class="card-body p-5">
             <div class="text-center mb-4">
-                <h1 class="h4 text-gray-900 mb-1">Admin Panelinə Giriş</h1>
-                <p class="text-muted small">Davam etmək üçün istifadəçi adı və parolu daxil edin</p>
+                <h1 class="h4 text-gray-900 mb-1">Login to Admin Panel</h1>
+                <p class="text-muted small">Enter username and password to continue.</p>
             </div>
 
             <div th:if="${param.error}" class="alert alert-danger">
-                İstifadəçi adı və ya parol yanlışdır.
+                The username or password is incorrect.
             </div>
             <div th:if="${param.logout}" class="alert alert-success">
-                Sistemdən uğurla çıxdınız.
+                You have successfully logged out.
             </div>
 
             <form th:action="@{/login}" method="post">
                 <div class="form-group">
-                    <label>İstifadəçi adı</label>
-                    <input type="text" name="username" class="form-control form-control-user" placeholder="İstifadəçi adı" required autofocus>
+                    <label>Username</label>
+                    <input type="text" name="username" class="form-control form-control-user" placeholder="Username" required autofocus>
                 </div>
                 <div class="form-group">
-                    <label>Parol</label>
-                    <input type="password" name="password" class="form-control form-control-user" placeholder="Parol" required>
+                    <label>Password</label>
+                    <input type="password" name="password" class="form-control form-control-user" placeholder="Password" required>
                 </div>
-                <button type="submit" class="btn btn-primary btn-user btn-block">Daxil ol</button>
+                <button type="submit" class="btn btn-primary btn-user btn-block">Login</button>
             </form>
         </div>
     </div>
