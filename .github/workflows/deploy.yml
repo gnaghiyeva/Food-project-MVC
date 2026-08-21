@@ -45,12 +45,12 @@ jobs:
           scp -i ~/.ssh/deploy_key "$JAR_FILE" \
           "$SERVER_USER@$SERVER_HOST:/home/ubuntu/Food-project-MVC/app-new.jar"
 
-      - name: Deploy Docker container
+            - name: Deploy Docker container
         env:
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
         run: |
-          ssh -i ~/.ssh/deploy_key "$SERVER_USER@$SERVER_HOST" << 'EOF'
+          ssh -i ~/.ssh/deploy_key "$SERVER_USER@$SERVER_HOST" 'bash -s' << 'EOF'
             set -e
 
             cd /home/ubuntu/Food-project-MVC
@@ -60,18 +60,25 @@ jobs:
 
             echo "Waiting for application to start..."
 
+            SUCCESS=0
+
             for i in $(seq 1 20); do
-              if curl -fsS http://localhost:9595/ > /dev/null; then
-                echo "Application is running successfully!"
-                docker ps
-                exit 0
+              if curl -fsS http://localhost:9595/ >/dev/null 2>&1; then
+                SUCCESS=1
+                break
               fi
 
               echo "Waiting... ($i/20)"
               sleep 5
             done
 
-            echo "Application did not start in time."
+            if [ "$SUCCESS" -eq 1 ]; then
+              echo "Application is running successfully!"
+              docker ps
+              exit 0
+            fi
+
+            echo "Application failed to start."
             docker logs --tail=100 food-app
             exit 1
           EOF
