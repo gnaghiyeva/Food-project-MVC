@@ -31,14 +31,14 @@ public class ProductController {
     public String product(Model model){
         List<ProductDto> productList = productService.getProducts();
         model.addAttribute("products", productList);
-        return "/dashboard/product/product";
+        return "dashboard/product/product";
     }
     @GetMapping("/admin/product/product-create")
     public String createProduct(Model model){
         List<CategoryDto> categories = categoryService.getCategories();
         model.addAttribute("categories", categories);
 
-        return "/dashboard/product/product-create";
+        return "dashboard/product/product-create";
     }
 
     @PostMapping("/admin/product/create")

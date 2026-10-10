@@ -25,12 +25,12 @@ public class HeroController {
     public String category(Model model){
         List<HeroDto> hero = heroService.getHero();
         model.addAttribute("hero", hero);
-        return "/dashboard/hero/hero";
+        return "dashboard/hero/hero";
     }
 
     @GetMapping("/admin/hero/hero-create")
     public String createHero(){
-        return "/dashboard/hero/hero-create";
+        return "dashboard/hero/hero-create";
     }
 
     @PostMapping("/admin/hero/create")

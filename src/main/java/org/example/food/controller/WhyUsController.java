@@ -23,12 +23,12 @@ public class WhyUsController {
     public String whyUs(Model model){
         List<WhyUsDto> cards = whyUsService.getCards();
         model.addAttribute("cards", cards);
-        return "/dashboard/why-us/why-us";
+        return "dashboard/why-us/why-us";
     }
     @GetMapping("/admin/why-us/why-us-create")
     public String addCard(Model model){
         model.addAttribute("whyUsCreateDto", new WhyUsCreateDto());
-        return "/dashboard/why-us/why-us-create";
+        return "dashboard/why-us/why-us-create";
     }
 
     @PostMapping("/admin/why-us/create")
