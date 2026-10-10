@@ -27,12 +27,12 @@ public class ContactController {
     public String contact(Model model){
         List<ContactDto> contact = contactService.getContact();
         model.addAttribute("contact", contact);
-        return "/dashboard/contact/contact";
+        return "dashboard/contact/contact";
     }
 
     @GetMapping("/admin/contact/contact-create")
     public String createContact(){
-        return "/dashboard/contact/contact-create";
+        return "dashboard/contact/contact-create";
     }
 
     @PostMapping("/admin/contact/create")

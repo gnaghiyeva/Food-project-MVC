@@ -28,11 +28,11 @@ public class AboutController {
     public String about(Model model){
         List<AboutDto> about = aboutService.getAbout();
         model.addAttribute("about", about);
-        return "/dashboard/about/about";
+        return "dashboard/about/about";
     }
     @GetMapping("/admin/about/about-create")
     public String createAbout(){
-        return "/dashboard/about/about-create";
+        return "dashboard/about/about-create";
     }
 
     @PostMapping("/admin/about/create")
